@@ -39,7 +39,7 @@ public class NetworkUtil {
         return popMovieUrl;
     }
 
-    public URL getImgUrl(String imgId) throws MalformedURLException {
+    public static URL getImgUrl(String imgId) throws MalformedURLException {
         Uri uri = Uri.parse(IMG_BASE_URL)
                 .buildUpon()
                 .appendPath(IMG_SIZE)
@@ -81,6 +81,8 @@ public class NetworkUtil {
         JSONObject jsonResults = new JSONObject(response.body().toString());
         return  jsonResults;
     }
+
+
 
 
 }
