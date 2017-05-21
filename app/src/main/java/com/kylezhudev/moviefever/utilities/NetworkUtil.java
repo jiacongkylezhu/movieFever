@@ -21,7 +21,7 @@ import okhttp3.Response;
 public class NetworkUtil {
     private static final String KEY_API = "api_key";
     //TODO API KEY ****************************************
-    private static final String API_KEY = "f01866a98f14dbeb0c2787741bf73236";
+    private static final String API_KEY = "";
 
     private static final String IMG_BASE_URL = "https://image.tmdb.org/t/p";
     private static final String SEARCH_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
