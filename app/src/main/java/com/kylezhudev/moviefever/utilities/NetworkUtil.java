@@ -2,6 +2,7 @@ package com.kylezhudev.moviefever.utilities;
 
 
 import android.net.Uri;
+import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -19,13 +20,15 @@ import okhttp3.Response;
 
 public class NetworkUtil {
     private static final String KEY_API = "api_key";
-    private static final String API_KEY = "";
+    //TODO API KEY ****************************************
+    private static final String API_KEY = "f01866a98f14dbeb0c2787741bf73236";
 
     private static final String IMG_BASE_URL = "https://image.tmdb.org/t/p";
     private static final String SEARCH_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     private static final String KEY_SORT_BY = "sort_by";
     private static final String POPULARITY = "popularity.desc";
     private static final String IMG_SIZE = "w185";
+    private static final String URL_TAG = "URL Checker";
 
 
 
@@ -36,6 +39,7 @@ public class NetworkUtil {
                 .appendQueryParameter(KEY_SORT_BY, POPULARITY)
                 .build();
         URL popMovieUrl = new URL(builtUri.toString()) ;
+        Log.i(URL_TAG, "Pop Movie Url: " + popMovieUrl.toString());
         return popMovieUrl;
     }
 
@@ -46,6 +50,7 @@ public class NetworkUtil {
                 .appendEncodedPath(imgId)
                 .build();
         URL imgUrl = new URL(uri.toString());
+        Log.i(URL_TAG, "Img Url: " + imgUrl.toString());
         return imgUrl;
     }
 
@@ -77,8 +82,10 @@ public class NetworkUtil {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = okHttpClient.newCall(request).execute();
+        Log.i("JSON_retrieving", "okHttp Executed");
 
-        JSONObject jsonResults = new JSONObject(response.body().toString());
+        JSONObject jsonResults = new JSONObject(response.body().string());
+        Log.i("JSON_Result", "JSON Result: " + jsonResults.toString());
         return  jsonResults;
     }
 
