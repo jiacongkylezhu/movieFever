@@ -6,7 +6,39 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+
+        <!--<item name="actionBarStyle">@style/ActionBarMenu</item>-->
+        <item name="popupMenuStyle">@style/PopupMenu</item>
+        <item name="listPreferredItemHeight">10dp</item>
+        <item name="listPreferredItemPaddingLeft">5dp</item>
+        <item name="listPreferredItemPaddingRight">5dp</item>
     </style>
+
+    
+
+
+    <style name="PopupMenu" parent="Base.Widget.AppCompat.ListPopupWindow">
+
+    </style>
+
+    <style name="PopupMenuTextView" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="PopupMenuListView" parent="android:Widget.Holo.ListView.DropDown">
+        <item name="android:divider">@color/divider</item>
+        <item name="android:dividerHeight">2dp</item>
+    </style>
+    <style name="ActionBarMenu2" parent="android:TextAppearance.Material.Widget.ActionBar.Menu">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:actionMenuTextColor">@color/dark_text</item>
+
+    </style>
+    <style name="ActionBarMenu" parent = "Widget.AppCompat.ActionBar">
+
+    </style>
+
+
 
 
 </resources>

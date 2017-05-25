@@ -22,6 +22,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+
+
 public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.MovieViewHolder> {
     private String[] mPosterPaths;
     private String[] mMovieTitle;
@@ -34,7 +36,7 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
     }
 
 
-    class MovieViewHolder extends RecyclerView.ViewHolder {
+    class MovieViewHolder extends RecyclerView.ViewHolder{
         private ImageView mIVMovieThumbnail;
         private TextView mTVMovieTitle;
 

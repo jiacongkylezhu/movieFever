@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -23,25 +25,23 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<String>{
+        implements LoaderManager.LoaderCallbacks<String> {
     private static final int MOVIE_LOADER_ID = 1;
     private TextView mTextView;
     private ProgressBar mProgressBar;
     private TextView mTvError;
-    private String mJsonString;
+    private Menu mMenu;
     private RecyclerView mRvMovie;
     private MovieViewAdapter mRvMovieAdapter;
     private GridLayoutManager gridLayoutManager;
 
-
-
+    private static int SORT_BY_FLAG = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mRvMovie = (RecyclerView) findViewById(R.id.rv_movie_main);
         mTextView = (TextView) findViewById(R.id.tv_json_results);
         mProgressBar = (ProgressBar) findViewById(R.id.loading_indicator);
@@ -52,38 +52,45 @@ public class MainActivity extends AppCompatActivity
         mRvMovieAdapter = new MovieViewAdapter(this);
         mRvMovie.setAdapter(mRvMovieAdapter);
 
-        //TODO 5/19 set RecyclerView and view holder
+
+
         getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
 
 
-
-//        getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
-
-
-
-
-//        String[] results = new String[result.length()];
-//        try {
-//           results = JsonUtil.getPosterPathFromJson(result);
-//        } catch (JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        for(int i=0; i< results.length; i++){
-//                mTextView.append(results[i] + "\n");
-//        }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_released_day:
+                SORT_BY_FLAG = 0;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                return true;
+            case R.id.item_popularity:
+                SORT_BY_FLAG = 1;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public Loader<String> onCreateLoader(int id, final Bundle args) {
         return new AsyncTaskLoader<String>(this) {
+            String mJsonString = null;
 
             @Override
             protected void onStartLoading() {
-//                if(args == null){
-//                    return;
-//                }
+                if (mJsonString != null) {
+                    deliverResult(mJsonString);
+                }
                 mProgressBar.setVisibility(View.VISIBLE);
                 forceLoad();
             }
@@ -93,7 +100,23 @@ public class MainActivity extends AppCompatActivity
                 URL url;
                 JSONObject rawJson;
                 try {
-                    url = NetworkUtil.getPopMovieUrl();
+                    switch (SORT_BY_FLAG) {
+                        case 0: {
+                            url = NetworkUtil.getMovieByReleasedDateUrl();
+                        }
+                        break;
+                        case 1: {
+                            url = NetworkUtil.getPopMovieUrl();
+                        }
+                        break;
+
+
+                        default: {
+                            url = NetworkUtil.getPopMovieUrl();
+                            break;
+                        }
+                    }
+//                    url = NetworkUtil.getPopMovieUrl();
                     rawJson = NetworkUtil.getRawMovieResults(url);
                     mJsonString = rawJson.toString();
                     Log.i("Main_JSON_Checker", "Raw JSON:" + mJsonString);
@@ -107,17 +130,24 @@ public class MainActivity extends AppCompatActivity
 
                 return mJsonString;
             }
+
+            @Override
+            public void deliverResult(String data) {
+                mJsonString = data;
+                super.deliverResult(data);
+            }
         };
     }
+
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         mProgressBar.setVisibility(View.INVISIBLE);
 
-        if(data == null){
+        if (data == null) {
             mTvError.setVisibility(View.VISIBLE);
-     //TODO notify adapter data change
-        }else{
+            //TODO notify adapter data change
+        } else {
             try {
                 mRvMovieAdapter.saveMovieResultsData(data);
             } catch (JSONException e) {
@@ -136,8 +166,6 @@ public class MainActivity extends AppCompatActivity
     public void onLoaderReset(Loader<String> loader) {
 
     }
-
-
 
 
 }

@@ -21,12 +21,13 @@ import okhttp3.Response;
 public class NetworkUtil {
     private static final String KEY_API = "api_key";
     //TODO API KEY ****************************************
-    private static final String API_KEY = "";
+    private static final String API_KEY = "f01866a98f14dbeb0c2787741bf73236";
 
     private static final String IMG_BASE_URL = "https://image.tmdb.org/t/p";
     private static final String SEARCH_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     private static final String KEY_SORT_BY = "sort_by";
     private static final String POPULARITY = "popularity.desc";
+    private static final String RELEASED_DAY = "release_date.desc";
     private static final String IMG_SIZE = "w185";
     private static final String URL_TAG = "URL Checker";
 
@@ -41,6 +42,16 @@ public class NetworkUtil {
         URL popMovieUrl = new URL(builtUri.toString()) ;
         Log.i(URL_TAG, "Pop Movie Url: " + popMovieUrl.toString());
         return popMovieUrl;
+    }
+
+    public static URL getMovieByReleasedDateUrl() throws MalformedURLException {
+        Uri builtUrl = Uri.parse(SEARCH_BASE_URL)
+                .buildUpon()
+                .appendQueryParameter(KEY_API, API_KEY)
+                .appendQueryParameter(KEY_SORT_BY, RELEASED_DAY)
+                .build();
+        Log.i(URL_TAG, "Released Date URL: " + builtUrl.toString());
+        return new URL(builtUrl.toString());
     }
 
     public static URL getImgUrl(String imgId) throws MalformedURLException {

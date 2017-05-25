@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Movie Fever</string>
+    <string name="menu_sort_by_release_day">Released Date</string>
+    <string name="menu_sort_by_popularity">Popularity</string>
 </resources>

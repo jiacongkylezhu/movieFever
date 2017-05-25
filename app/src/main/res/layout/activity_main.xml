@@ -29,8 +29,9 @@
         android:id="@+id/tv_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Network Error, Please refresh"
+        android:text="Network Error, Please check network connection"
         android:layout_centerInParent="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible"
+        android:textSize="20sp"/>
 
 </RelativeLayout>
