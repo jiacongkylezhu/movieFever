@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity
     private GridLayoutManager gridLayoutManager;
 
 
-    private static int SORT_BY_FLAG = 0;
+    private static int SORT_BY_FLAG = 1;
 
 
     @Override
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.item_released_day:
+            case R.id.item_upcoming:
                 SORT_BY_FLAG = 0;
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
                 return true;
@@ -77,6 +77,11 @@ public class MainActivity extends AppCompatActivity
                 SORT_BY_FLAG = 1;
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
                 return true;
+            case R.id.item_high_rate:
+                SORT_BY_FLAG = 2;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -107,18 +112,22 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                         case 0: {
-                            url = NetworkUtil.getMovieByReleasedDateUrl();
+                            url = NetworkUtil.getUpcomingMovieUrl();
                         }
                         break;
                         case 1: {
                             url = NetworkUtil.getPopMovieUrl();
                         }
                         break;
+                        case 2: {
+                            url = NetworkUtil.gethighRateUrl();
+                        }
+                        break;
 
 
 
                     }
-                    url = NetworkUtil.getPopMovieUrl();
+//                    url = NetworkUtil.getPopMovieUrl();
                     rawJson = NetworkUtil.getRawMovieResults(url);
                     mJsonString = rawJson.toString();
                     Log.i("Main_JSON_Checker", "Raw JSON:" + mJsonString);

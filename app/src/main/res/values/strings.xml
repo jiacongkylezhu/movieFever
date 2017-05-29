@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">Movie Fever</string>
-    <string name="menu_sort_by_release_day">Released Date</string>
-    <string name="menu_sort_by_popularity">Popularity</string>
+    <string name="menu_sort_by_upcoming">UPCOMING</string>
+    <string name="menu_sort_by_popularity">POPULAR</string>
+    <string name="menu_sort_by_top_rated">TOP RATED</string>
     <string name="trailer_title">Trailers:</string>
     <string name="movie_title">Movie Title</string>
     <string name="trailer_1">Trailer 1</string>

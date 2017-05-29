@@ -32,6 +32,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
     private TextView mTvOverView;
     private TextView mTvTrailer1;
     private TextView mTvNotrailer;
+    private TextView mTvTrailerTitle;
     private TextView mTvErrorMessage;
     private ImageView mImgPlay1;
     private ImageView mImgPlay2;
@@ -61,6 +62,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         mTvOverView = (TextView) findViewById(R.id.tv_movie_overview);
         mTvNotrailer = (TextView) findViewById(R.id.tv_no_trailer);
         mTvTrailer1 = (TextView) findViewById(R.id.tv_trailer_1);
+        mTvTrailerTitle = (TextView) findViewById(R.id.tv_trailers_title);
         mTvErrorMessage = (TextView) findViewById(R.id.tv_detail_error);
         mImgPlay1 = (ImageView) findViewById(R.id.img_play_arrow_1);
         mImgPlay2 = (ImageView) findViewById(R.id.img_play_arrow_2);
@@ -91,7 +93,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
             @Override
             protected void onStartLoading() {
-
+                hideDetailUI();
                 mProgressBar.setVisibility(View.VISIBLE);
                 forceLoad();
 
@@ -140,6 +142,12 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
     private void showError() {
         mTvMovieTitle.setText("");
+       hideDetailUI();
+        mTvErrorMessage.setVisibility(View.VISIBLE);
+    }
+
+    private void hideDetailUI(){
+        mTvMovieTitle.setVisibility(View.INVISIBLE);
         mPosterThumbnail.setVisibility(View.INVISIBLE);
         mTvReleasedYear.setVisibility(View.INVISIBLE);
         mTvRunTime.setVisibility(View.INVISIBLE);
@@ -150,7 +158,25 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         mDivider2.setVisibility(View.INVISIBLE);
         mRlTrailer1.setVisibility(View.INVISIBLE);
         mRlTrailer2.setVisibility(View.INVISIBLE);
-        mTvErrorMessage.setVisibility(View.VISIBLE);
+        mMarkAsFavorite.setVisibility(View.INVISIBLE);
+        mTvTrailerTitle.setVisibility(View.INVISIBLE);
+
+    }
+
+    private void showDetailUI(){
+        mTvMovieTitle.setVisibility(View.VISIBLE);
+        mPosterThumbnail.setVisibility(View.VISIBLE);
+        mTvReleasedYear.setVisibility(View.VISIBLE);
+        mTvRunTime.setVisibility(View.VISIBLE);
+        mTvRating.setVisibility(View.VISIBLE);
+        mTvOverView.setVisibility(View.VISIBLE);
+        mDivider0.setVisibility(View.VISIBLE);
+        mDivider1.setVisibility(View.VISIBLE);
+        mDivider2.setVisibility(View.VISIBLE);
+        mRlTrailer1.setVisibility(View.VISIBLE);
+        mRlTrailer2.setVisibility(View.VISIBLE);
+        mMarkAsFavorite.setVisibility(View.VISIBLE);
+        mTvTrailerTitle.setVisibility(View.VISIBLE);
     }
 
     private void noTrailer() {
@@ -164,6 +190,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
     private void showDetailResults(String loadedData) throws MalformedURLException, JSONException {
         mTvErrorMessage.setVisibility(View.INVISIBLE);
         if (mPosterUrlString != null) {
+            showDetailUI();
             Picasso
                     .with(this)
                     .load(mPosterUrlString)
