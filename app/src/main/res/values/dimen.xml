@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+
+<resources>
+    <dimen name="detail_movie_title_large_text">28sp</dimen>
+    <dimen name="margin_general">32dp</dimen>
+    <dimen name="margin_x_small">8dp</dimen>
+    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_M">16dp</dimen>
+    <dimen name="subtitle_text_size_M">18sp</dimen>
+    <dimen name="subtitle_text_size_S">14sp</dimen>
+
+</resources>

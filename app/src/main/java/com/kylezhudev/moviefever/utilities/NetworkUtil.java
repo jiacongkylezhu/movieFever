@@ -20,11 +20,13 @@ import okhttp3.Response;
 
 public class NetworkUtil {
     private static final String KEY_API = "api_key";
-    //TODO API KEY ****************************************
-    private static final String API_KEY = "f01866a98f14dbeb0c2787741bf73236";
+
+    //TODO INSERT API KEY HERE****************************************
+    private static final String API_KEY = "";
 
     private static final String IMG_BASE_URL = "https://image.tmdb.org/t/p";
     private static final String SEARCH_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
+    private static final String MOVIE_DETAIL_BASE_URL = "https://api.themoviedb.org/3/movie";
     private static final String KEY_SORT_BY = "sort_by";
     private static final String POPULARITY = "popularity.desc";
     private static final String RELEASED_DAY = "release_date.desc";
@@ -98,6 +100,23 @@ public class NetworkUtil {
         JSONObject jsonResults = new JSONObject(response.body().string());
         Log.i("JSON_Result", "JSON Result: " + jsonResults.toString());
         return  jsonResults;
+    }
+
+
+
+    public static JSONObject getMovieDetailsById(String id) throws IOException, JSONException {
+        Uri builtUri = Uri.parse(MOVIE_DETAIL_BASE_URL)
+                .buildUpon()
+                .appendPath(id)
+                .appendQueryParameter(KEY_API,API_KEY)
+                .build();
+
+        Log.i("JSON_Result", "Movie detail URL: " + builtUri.toString());
+
+        URL detailUrl = new URL(builtUri.toString());
+        JSONObject movieDetailJson = getRawMovieResults(detailUrl);
+        Log.i("JSON_Result", "Movie detail JSON: " + movieDetailJson.toString());
+        return movieDetailJson;
     }
 
 

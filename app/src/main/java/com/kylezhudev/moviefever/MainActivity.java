@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private MovieViewAdapter mRvMovieAdapter;
     private GridLayoutManager gridLayoutManager;
 
+
     private static int SORT_BY_FLAG = 0;
 
 
@@ -101,6 +102,10 @@ public class MainActivity extends AppCompatActivity
                 JSONObject rawJson;
                 try {
                     switch (SORT_BY_FLAG) {
+                        default: {
+                            url = NetworkUtil.getPopMovieUrl();
+                        }
+                        break;
                         case 0: {
                             url = NetworkUtil.getMovieByReleasedDateUrl();
                         }
@@ -111,12 +116,9 @@ public class MainActivity extends AppCompatActivity
                         break;
 
 
-                        default: {
-                            url = NetworkUtil.getPopMovieUrl();
-                            break;
-                        }
+
                     }
-//                    url = NetworkUtil.getPopMovieUrl();
+                    url = NetworkUtil.getPopMovieUrl();
                     rawJson = NetworkUtil.getRawMovieResults(url);
                     mJsonString = rawJson.toString();
                     Log.i("Main_JSON_Checker", "Raw JSON:" + mJsonString);
@@ -146,7 +148,7 @@ public class MainActivity extends AppCompatActivity
 
         if (data == null) {
             mTvError.setVisibility(View.VISIBLE);
-            //TODO notify adapter data change
+
         } else {
             try {
                 mRvMovieAdapter.saveMovieResultsData(data);
