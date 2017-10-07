@@ -120,7 +120,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                         case 2: {
-                            url = NetworkUtil.gethighRateUrl();
+                            url = NetworkUtil.getHighRateUrl();
                         }
                         break;
 

@@ -13,4 +13,7 @@
     <string name="mark_as_favorite">MARK AS FAVORITE</string>
     <string name="no_trailer_available">No Trailer Available</string>
     <string name="description">Movie Overview. This is where the description located. It has to be long and contains a bunch of texts</string>
+
+
+    <string name="video">video</string>
 </resources>

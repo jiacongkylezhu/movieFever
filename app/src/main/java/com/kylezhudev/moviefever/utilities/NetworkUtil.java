@@ -1,8 +1,11 @@
 package com.kylezhudev.moviefever.utilities;
 
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
+
+import com.kylezhudev.moviefever.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -31,13 +34,21 @@ public final class NetworkUtil {
     private static final String UPCOMING = "upcoming";
 
     private static final String IMG_SIZE = "w185";
-
     private static final String LANGUAGE = "language";
-
     private static final String EN_US = "en-US";
+    private static final String KEY_YOUTUBE = "v";
+
+
+
+    private static final String YOUTUBE_TRAILER_URL = "https://www.youtube.com/watch";
 
 
     private static final String URL_TAG = "URL Checker";
+
+
+
+    private static final String JSON_RETRIEVE_TAG = "JSON_Retrieving";
+    private static final String JSON_RESULT_TAG = "JSON_Retrieving";
 
 
     public static URL getPopMovieUrl() throws MalformedURLException {
@@ -73,6 +84,28 @@ public final class NetworkUtil {
         return imgUrl;
     }
 
+    public static URL getVideoUrl(Context context, String movieId) throws MalformedURLException {
+        Uri uri = Uri.parse(MOVIE_SEARCH_BASE_URL)
+                .buildUpon()
+                .appendEncodedPath(movieId)
+                .appendPath(context.getString(R.string.video))
+                .appendQueryParameter(KEY_API, API_KEY)
+                .appendQueryParameter(LANGUAGE, EN_US)
+                .build();
+        URL videoUrl = new URL(uri.toString());
+        return videoUrl;
+    }
+
+    public static URL getYoutubeUrl(String key) throws MalformedURLException {
+        Uri uri = Uri.parse(YOUTUBE_TRAILER_URL)
+                .buildUpon()
+                .appendQueryParameter(KEY_YOUTUBE, key)
+                .build();
+        URL youtubeVideoUrl = new URL(uri.toString());
+        return  youtubeVideoUrl;
+
+    }
+
     public JSONObject getPopMovieResults(URL url) throws IOException {
         JSONObject rawMovieResults;
         HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
@@ -97,15 +130,35 @@ public final class NetworkUtil {
         }
     }
 
+    /**
+     * Using OkHttpClient to fetch raw JSON objects with urls
+     *
+     */
+
+
+
     public static JSONObject getRawMovieResults(URL url) throws IOException, JSONException {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request request = new Request.Builder().url(url).build();
         Response response = okHttpClient.newCall(request).execute();
-        Log.i("JSON_retrieving", "okHttp Executed");
+        Log.i(JSON_RETRIEVE_TAG, "okHttp retrieved raw movie Json");
 
         JSONObject jsonResults = new JSONObject(response.body().string());
-        Log.i("JSON_Result", "JSON Result: " + jsonResults.toString());
+        Log.i(JSON_RESULT_TAG, "JSON Result: " + jsonResults.toString());
         return jsonResults;
+    }
+
+
+
+    public static JSONObject getRawVideoJson(URL videoUrl) throws IOException, JSONException {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request videoJsonRequest = new Request.Builder().url(videoUrl).build();
+        Response videoJsonResponse = okHttpClient.newCall(videoJsonRequest).execute();
+        Log.i(JSON_RETRIEVE_TAG, "okHttp retrieved ra video Json");
+
+        JSONObject rawVideoJson = new JSONObject(videoJsonResponse.toString());
+        Log.i(JSON_RESULT_TAG, "JSON Result: " + videoJsonResponse.toString());
+        return rawVideoJson;
     }
 
 
@@ -124,7 +177,7 @@ public final class NetworkUtil {
         return movieDetailJson;
     }
 
-    public static URL gethighRateUrl() throws MalformedURLException {
+    public static URL getHighRateUrl() throws MalformedURLException {
         Uri builtUri = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
                 .appendPath(TOP_RATE)
@@ -134,6 +187,8 @@ public final class NetworkUtil {
 
         return new URL(builtUri.toString());
     }
+
+
 
 
 }
