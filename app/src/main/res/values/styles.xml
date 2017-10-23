@@ -14,7 +14,7 @@
         <item name="listPreferredItemPaddingRight">5dp</item>
     </style>
 
-    
+
 
 
     <style name="PopupMenu" parent="Base.Widget.AppCompat.ListPopupWindow">

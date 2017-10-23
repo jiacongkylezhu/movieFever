@@ -18,6 +18,7 @@ public final class JsonUtil {
     private static final String MF_VIDEO = "video";
     private static final String MF_OVERVIEW = "overview";
     private static final String VIDEO_KEY = "key";
+    private static final String VIDEO_NAME = "name";
 
 
     public static String[] getPosterPathFromJson(String movieResults) throws JSONException {
@@ -40,6 +41,10 @@ public final class JsonUtil {
 
     public static String[] getVideoKeyFromJson(String videoResults) throws JSONException {
         return getResultFromJson(videoResults, VIDEO_KEY);
+    }
+
+    public static String[] getTrailerName(String videoResults) throws JSONException {
+        return getResultFromJson(videoResults, VIDEO_NAME);
     }
 
 

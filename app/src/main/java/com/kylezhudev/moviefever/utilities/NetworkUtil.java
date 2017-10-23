@@ -5,6 +5,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
+import com.kylezhudev.moviefever.APIKeys;
 import com.kylezhudev.moviefever.R;
 
 import org.json.JSONException;
@@ -24,8 +25,8 @@ import okhttp3.Response;
 public final class NetworkUtil {
     private static final String KEY_API = "api_key";
 
-    //TODO INSERT API KEY HERE****************************************
-    private static final String API_KEY = "f01866a98f14dbeb0c2787741bf73236";
+
+
 
     private static final String IMG_BASE_URL = "https://image.tmdb.org/t/p";
     private static final String MOVIE_SEARCH_BASE_URL = "https://api.themoviedb.org/3/movie";
@@ -44,9 +45,6 @@ public final class NetworkUtil {
 
 
     private static final String URL_TAG = "URL Checker";
-
-
-
     private static final String JSON_RETRIEVE_TAG = "JSON_Retrieving";
     private static final String JSON_RESULT_TAG = "JSON_Retrieving";
 
@@ -55,7 +53,7 @@ public final class NetworkUtil {
         Uri builtUri = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
                 .appendPath(POPULAR)
-                .appendQueryParameter(KEY_API, API_KEY)
+                .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
                 .build();
         URL popMovieUrl = new URL(builtUri.toString());
         Log.i(URL_TAG, "Pop Movie Url: " + popMovieUrl.toString());
@@ -66,7 +64,7 @@ public final class NetworkUtil {
         Uri builtUrl = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
                 .appendPath(UPCOMING)
-                .appendQueryParameter(KEY_API, API_KEY)
+                .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
                 .appendQueryParameter(LANGUAGE, EN_US)
                 .build();
         Log.i(URL_TAG, "Upcoming URL: " + builtUrl.toString());
@@ -84,15 +82,17 @@ public final class NetworkUtil {
         return imgUrl;
     }
 
-    public static URL getVideoUrl(Context context, String movieId) throws MalformedURLException {
-        Uri uri = Uri.parse(MOVIE_SEARCH_BASE_URL)
+    public static URL getTailerUrl(Context context, String movieId) throws MalformedURLException {
+        Uri builtUrl = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
-                .appendEncodedPath(movieId)
-                .appendPath(context.getString(R.string.video))
-                .appendQueryParameter(KEY_API, API_KEY)
+//                .appendEncodedPath(movieId)
+                .appendPath(movieId)
+                .appendPath(context.getString(R.string.videos))
+                .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
                 .appendQueryParameter(LANGUAGE, EN_US)
                 .build();
-        URL videoUrl = new URL(uri.toString());
+        URL videoUrl = new URL(builtUrl.toString());
+        Log.i(URL_TAG, "Trailer Url: " + videoUrl.toString());
         return videoUrl;
     }
 
@@ -154,10 +154,10 @@ public final class NetworkUtil {
         OkHttpClient okHttpClient = new OkHttpClient();
         Request videoJsonRequest = new Request.Builder().url(videoUrl).build();
         Response videoJsonResponse = okHttpClient.newCall(videoJsonRequest).execute();
-        Log.i(JSON_RETRIEVE_TAG, "okHttp retrieved ra video Json");
+        Log.i(JSON_RETRIEVE_TAG, "okHttp retrieved raw video Json");
 
-        JSONObject rawVideoJson = new JSONObject(videoJsonResponse.toString());
-        Log.i(JSON_RESULT_TAG, "JSON Result: " + videoJsonResponse.toString());
+        JSONObject rawVideoJson = new JSONObject(videoJsonResponse.body().string());
+        Log.i(JSON_RESULT_TAG, "Video JSON Result: " + rawVideoJson.toString());
         return rawVideoJson;
     }
 
@@ -166,7 +166,7 @@ public final class NetworkUtil {
         Uri builtUri = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
                 .appendPath(id)
-                .appendQueryParameter(KEY_API, API_KEY)
+                .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
                 .build();
 
         Log.i("JSON_Result", "Movie detail URL: " + builtUri.toString());
@@ -177,11 +177,13 @@ public final class NetworkUtil {
         return movieDetailJson;
     }
 
+
+
     public static URL getHighRateUrl() throws MalformedURLException {
         Uri builtUri = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
                 .appendPath(TOP_RATE)
-                .appendQueryParameter(KEY_API, API_KEY)
+                .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
                 .appendQueryParameter(LANGUAGE, EN_US)
                 .build();
 

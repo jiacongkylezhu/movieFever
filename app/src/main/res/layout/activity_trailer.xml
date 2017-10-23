@@ -6,9 +6,11 @@
     android:layout_height="match_parent"
     tools:context="com.kylezhudev.moviefever.TrailerActivity">
 
-    <VideoView
-        android:id="@+id/vv_play_trailer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    <com.google.android.youtube.player.YouTubePlayerView
+        android:id="@+id/youTube_activity_playerView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+    </com.google.android.youtube.player.YouTubePlayerView>
 
 </android.support.constraint.ConstraintLayout>
