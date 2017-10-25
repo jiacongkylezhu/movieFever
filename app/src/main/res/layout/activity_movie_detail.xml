@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:text="@string/network_error"
-                android:textSize="@dimen/subtitle_text_size_M"
+                android:textSize="@dimen/subtitle_text_size_XS"
                 android:visibility="invisible" />
 
             <ImageView
@@ -120,14 +120,34 @@
             android:layout_margin="@dimen/margin_x_small"
             android:background="@color/divider" />
 
+        <FrameLayout
+            android:id="@+id/fl_youtube"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <fragment
+                android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
+                android:id="@+id/youTube_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_large"
+                android:layout_marginBottom="@dimen/margin_large"/>
+
+        </FrameLayout>
+
+
+
+
         <TextView
             android:id="@+id/tv_trailers_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_x_small"
-            android:text="@string/trailer_title"
+            android:text="@string/more"
             android:textSize="@dimen/subtitle_text_size_M"
             android:textStyle="bold" />
+
+
 
 
 
@@ -167,24 +187,11 @@
                 android:scaleType="center"/>
 
 
-
-
-
-            <ImageView
-                android:id="@+id/img_divider_1"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@id/trailer1_thumbnail"
-                android:layout_margin="@dimen/margin_x_small"
-                android:background="@color/divider" />
-
-
             <TextView
                 android:id="@+id/tv_no_trailer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/no_trailer_available"
-                android:layout_above="@id/img_divider_1"
                 android:layout_marginBottom="12dp"
                 android:layout_marginStart="@dimen/margin_M"
                 android:layout_toEndOf="@+id/img_play_arrow_1"
@@ -195,66 +202,19 @@
                 android:id="@+id/tv_trailer_1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="17dp"
+                android:layout_marginStart="20dp"
                 tools:text="@string/trailer_1"
                 android:textSize="@dimen/subtitle_text_size_M"
-                android:layout_above="@+id/tv_no_trailer"
-                android:layout_toEndOf="@+id/trailer1_thumbnail" />
+                android:layout_below="@+id/img_detail_not_available"
+                android:layout_toEndOf="@+id/trailer1_thumbnail"
+                android:layout_marginTop="12dp" />
 
 
         </RelativeLayout>
 
-        <RelativeLayout
-            android:id="@+id/relative_layout_detail_trailer_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:id="@+id/img_play_arrow_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/margin_M"
-                android:background="@drawable/ic_play_arrow_gray_48px"
-                android:backgroundTint="@color/secondary_text"
-                android:visibility="invisible"/>
-
-            <com.google.android.youtube.player.YouTubeThumbnailView
-                android:id="@+id/trailer2_thumbnail"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@drawable/no_thumbnail"
-                android:layout_marginTop="@dimen/margin_M"/>
-
-            <ImageView
-                android:id="@+id/img_divider_2"
-                android:layout_width="match_parent"
-                android:layout_height="2dp"
-                android:layout_below="@id/trailer2_thumbnail"
-                android:layout_marginStart="@dimen/margin_x_small"
-                android:layout_marginEnd="@dimen/margin_x_small"
-                android:layout_marginTop="@dimen/margin_M"
-                android:background="@color/divider" />
-
-            <TextView
-                android:id="@+id/tv_trailer_2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_above="@id/img_divider_2"
-                android:layout_centerVertical="true"
-                android:layout_margin="@dimen/margin_M"
-                android:layout_toEndOf="@id/trailer2_thumbnail"
-                tools:text="@string/trailer_2"
-                android:textSize="@dimen/subtitle_text_size_M" />
 
 
-        </RelativeLayout>
 
-        <fragment
-            android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
-            android:id="@+id/youTube_playerView_fragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
 
 
     </LinearLayout>

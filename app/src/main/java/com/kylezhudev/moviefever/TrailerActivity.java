@@ -39,7 +39,8 @@ public class TrailerActivity extends YouTubeBaseActivity implements
     public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
         this.youTubePlayer = player;
         if(!wasRestored && videoId != null){
-            player.cueVideo(videoId);
+            player.loadVideo(videoId, 1);
+            player.setFullscreen(true);
         }
     }
 

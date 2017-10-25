@@ -10,5 +10,6 @@
     <dimen name="margin_M">16dp</dimen>
     <dimen name="subtitle_text_size_M">18sp</dimen>
     <dimen name="subtitle_text_size_S">14sp</dimen>
+    <dimen name="subtitle_text_size_XS">8sp</dimen>
 
 </resources>
