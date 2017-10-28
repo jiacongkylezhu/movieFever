@@ -2,7 +2,6 @@ package com.kylezhudev.moviefever;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.android.youtube.player.YouTubeBaseActivity;
 import com.google.android.youtube.player.YouTubeInitializationResult;
@@ -25,14 +24,14 @@ public class TrailerActivity extends YouTubeBaseActivity implements
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youTube_activity_playerView);
         youTubePlayerView.initialize(APIKeys.YOUTUBE_API_KEY, this);
-        youTubePlayerView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(youTubePlayer != null){
-                    youTubePlayer.cueVideo(videoId);
-                }
-            }
-        });
+//        youTubePlayerView.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(youTubePlayer != null){
+//                    youTubePlayer.cueVideo(videoId);
+//                }
+//            }
+//        });
     }
 
     @Override
@@ -41,11 +40,25 @@ public class TrailerActivity extends YouTubeBaseActivity implements
         if(!wasRestored && videoId != null){
             player.loadVideo(videoId, 1);
             player.setFullscreen(true);
+        }else{
+            player.play();
         }
     }
 
     @Override
     public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
         this.youTubePlayer = null;
+    }
+
+    @Override
+    public void onBackPressed() {
+        this.youTubePlayer.setFullscreen(false);
+        super.onBackPressed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        this.youTubePlayer.release();
+        super.onDestroy();
     }
 }

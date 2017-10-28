@@ -31,7 +31,7 @@ public class YouTubePlayerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        YouTubePlayerSupportFragment youTubePlayerSupportFragment =
+        final YouTubePlayerSupportFragment youTubePlayerSupportFragment =
                 YouTubePlayerSupportFragment.newInstance();
         FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
         transaction.add(R.id.youTube_playerView, youTubePlayerSupportFragment).commit();
@@ -43,6 +43,7 @@ public class YouTubePlayerFragment extends Fragment {
                     youTubePlayer = player;
                     videoId = getTag();
                     youTubePlayer.cueVideo(videoId);
+
                 }
             }
 

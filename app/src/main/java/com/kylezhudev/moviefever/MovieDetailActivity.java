@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -11,6 +12,7 @@ import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -35,7 +37,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 
 
-public class MovieDetailActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<String> {
+public class MovieDetailActivity extends AppCompatActivity implements
+        LoaderManager.LoaderCallbacks<String> {
     private TextView mTvMovieTitle;
     private TextView mTvReleasedYear;
     private TextView mTvRunTime;
@@ -68,9 +71,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
     private YouTubePlayerSupportFragment mYouTube1stTrailerFragment;
 
 
-    public static final String VIDEO_INTENT_KEY = "video_intent";
-    private static final int TRAILER_1_KEY = 101;
-    private static final int TRAILER_2_KEY = 102;
+
     public static final String TRAILER_INTENT_KEY = "trailer_key";
     private static final String TRAILER_PRE_KEY = "trailer_id";
 
@@ -104,6 +105,8 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         mPosterUrlString = intent.getStringExtra(KEY_POSTER_URL);
         thumbnailListener = new ThumbnailListener();
 
+
+
         getSupportLoaderManager().initLoader(MOVIE_DETAIL_LOADER_ID, null, this);
         getSupportLoaderManager().restartLoader(MOVIE_TRAILER_LOADER_ID, null, this);
 
@@ -118,15 +121,21 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+
+        super.onSaveInstanceState(outState, outPersistentState);
+    }
 
     @Override
     protected void onPause() {
-        if(mYouTubePlayer != null){
+        if (mYouTubePlayer != null) {
             mYouTubePlayer.release();
+
         }
+
         super.onPause();
     }
-
 
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
@@ -213,7 +222,7 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
         if (loader.getId() == MOVIE_TRAILER_LOADER_ID) {
             //TODO(1) adjust thumbnail position and get rid of play arrow drawables
-            //TODO(2) Set up onClick thumnail and play trailer on fullscreen
+            //TODO(2) Set up onClick thumbnail and play trailer on fullscreen
             if (data == null) {
                 noTrailer();
             } else {
@@ -295,10 +304,16 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
 
 
     private void noTrailer() {
-        mImgNoTrailer.setVisibility(View.VISIBLE);
-        mTvNoTrailer.setVisibility(View.VISIBLE);
-        mTvTrailerName.setVisibility(View.INVISIBLE);
-        mFlYouTube.setVisibility(View.INVISIBLE);
+//        mImgNoTrailer.setVisibility(View.VISIBLE);
+//        mTvNoTrailer.setVisibility(View.VISIBLE);
+//        mTvTrailerName.setVisibility(View.INVISIBLE);
+//        mFlYouTube.setVisibility(View.INVISIBLE);
+        ((ViewGroup) mFlYouTube.getParent()).removeView(mFlYouTube);
+    }
+
+    private void noMoreTrailer() {
+        ((ViewGroup) mRlMoreTrailer.getParent()).removeView(mRlMoreTrailer);
+        ((ViewGroup) mTvTrailerTitle.getParent()).removeView(mTvTrailerTitle);
     }
 
     private void showTrailer(String loadedVideoJsonString) throws JSONException {
@@ -319,7 +334,6 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         String[] videoKeys = JsonUtil.getVideoKeyFromJson(videoJsonString);
         if (videoKeys.length > 0) {
             mTrailer1Id = videoKeys[0];
-//            mTrailerThumbnail.setTag(videoKeys[0]);
             SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
             sharedPreferences.edit()
                     .putString(TRAILER_PRE_KEY, mTrailer1Id)
@@ -327,7 +341,8 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
             Log.i("Video ID 1", "Trailer1 ID: " + videoKeys[0]);
         }
 
-        if (videoKeys.length > 0) {
+
+        if (videoKeys.length > 1) {
             mTrailer2Id = videoKeys[1];
             mTrailerThumbnail.setTag(videoKeys[1]);
             Log.i("Video ID 2", "Trailer2 ID: " + videoKeys[1]);
@@ -347,25 +362,28 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         startActivity(playerIntent);
     }
 
+
     private void loadTrailer(final int attempts) {
         mYouTube1stTrailerFragment = (YouTubePlayerSupportFragment) getSupportFragmentManager().findFragmentById(R.id.youTube_fragment);
         mYouTube1stTrailerFragment.initialize(APIKeys.YOUTUBE_API_KEY, new YouTubePlayer.OnInitializedListener() {
             @Override
-            public void onInitializationSuccess(YouTubePlayer.Provider provider, YouTubePlayer player, boolean wasRestored) {
-                mYouTubePlayer = player;
-                if (!wasRestored && mTrailer1Id != null) {
-                    player.cueVideo(mTrailer1Id);
-                }
+            public void onInitializationSuccess(YouTubePlayer.Provider provider, final YouTubePlayer player, boolean wasRestored) {
 
+                mYouTubePlayer = player;
+
+                if (!wasRestored && mTrailer1Id != null) {
+                    mYouTubePlayer.cueVideo(mTrailer1Id);
+                }
             }
+
 
             @Override
             public void onInitializationFailure(YouTubePlayer.Provider provider, YouTubeInitializationResult youTubeInitializationResult) {
                 int maxAttempts = 3;
-                if(attempts <= maxAttempts){
+                if (attempts <= maxAttempts) {
                     loadTrailer(attempts + 1);
                     Log.i("Attempts counter", "Attempt: " + attempts);
-                }else{
+                } else {
                     mYouTubePlayer = null;
                     Toast.makeText(getApplicationContext(), "Failed to Initialized video", Toast.LENGTH_SHORT).show();
                     return;
@@ -373,7 +391,6 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
             }
 
         });
-
     }
 
 
@@ -397,8 +414,14 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
         public void onInitializationSuccess(YouTubeThumbnailView thumbnailView, YouTubeThumbnailLoader thumbnailLoader) {
             thumbnailLoader.setOnThumbnailLoadedListener(this);
             thumbnailView.setImageResource(R.drawable.loading_thumbnail);
-            String videoKey = thumbnailView.getTag().toString();
-            thumbnailLoader.setVideo(videoKey);
+
+            if (thumbnailView.getTag() != null) {
+                String videoKey = thumbnailView.getTag().toString();
+                thumbnailLoader.setVideo(videoKey);
+            } else {
+                noMoreTrailer();
+            }
+
         }
 
         @Override
@@ -406,7 +429,6 @@ public class MovieDetailActivity extends AppCompatActivity implements LoaderMana
             thumbnailView.setImageResource(R.drawable.no_thumbnail);
         }
     }
-
 
 
 }
