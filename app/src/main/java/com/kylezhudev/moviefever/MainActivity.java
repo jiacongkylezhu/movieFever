@@ -1,5 +1,6 @@
 package com.kylezhudev.moviefever;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
@@ -80,6 +81,9 @@ public class MainActivity extends AppCompatActivity
             case R.id.item_high_rate:
                 SORT_BY_FLAG = 2;
                 getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                return true;
+            case R.id.item_favorites:
+                startActivity(new Intent(this, FavoritesActivity.class));
                 return true;
 
             default:

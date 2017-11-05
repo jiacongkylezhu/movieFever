@@ -34,7 +34,8 @@ public final class NetworkUtil {
     private static final String TOP_RATE = "top_rated";
     private static final String UPCOMING = "upcoming";
 
-    private static final String IMG_SIZE = "w185";
+//    private static final String IMG_SIZE = "w185";
+    private static final String IMG_SIZE = "w780";
     private static final String LANGUAGE = "language";
     private static final String EN_US = "en-US";
     private static final String KEY_YOUTUBE = "v";

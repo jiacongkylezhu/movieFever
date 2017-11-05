@@ -98,7 +98,8 @@
                 android:background="@color/colorAccent"
                 android:text="@string/mark_as_favorite"
                 android:layout_marginTop="@dimen/margin_M"
-                android:textColor="@color/secondary_text" />
+                android:textColor="@color/secondary_text"
+                android:onClick="onClickAddFavorite"/>
 
 
 

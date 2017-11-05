@@ -74,6 +74,10 @@ public final class JsonUtil {
         return getDetailFromJson(detailResult, MF_RUN_TIME);
     }
 
+    public static String getDetailPosterPath(String detailResult) throws JSONException {
+        return getDetailFromJson(detailResult, MF_POSTER_PATH);
+    }
+
     public static String getDetailReleaseDate(String detailResult) throws JSONException {
         return getDetailFromJson(detailResult, MF_RELEASED_DATE);
     }

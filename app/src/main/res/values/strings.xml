@@ -3,6 +3,7 @@
     <string name="menu_sort_by_upcoming">UPCOMING</string>
     <string name="menu_sort_by_popularity">POPULAR</string>
     <string name="menu_sort_by_top_rated">TOP RATED</string>
+    <string name="menu_sort_by_favorites">FAVORITES</string>
     <string name="trailer_title">Trailers:</string>
     <string name="more">More:</string>
     <string name="movie_title">Movie Title</string>
@@ -25,6 +26,17 @@
     <string name="network_error">Please check network connection</string>
     <string name="error_video_id_invalid">Video ID is Invalid, Please play a different trailer</string>
     <string name="error_video_initialize_failure">Video failed to play</string>
+    <string name="error_failed_to_insert">Failed to insert row into </string>
+    <string name="error_unknown_uri">Unknown Uri </string>
+    <string name="error_not_yet_implemented">Not yet implemented</string>
+
+    <!---
+       Warning Messages
+    -->
+
+    <string name="no_favorite">Please add movies to Favorites</string>
+    <string name="already_in_favorites">The movie is already in Favorites</string>
+    <string name="added_to_favorites">Added to favorites</string>
 
 
 </resources>

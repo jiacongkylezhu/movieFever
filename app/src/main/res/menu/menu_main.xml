@@ -14,5 +14,9 @@
         android:id="@+id/item_high_rate"
         android:title="@string/menu_sort_by_top_rated" />
 
+    <item
+        android:id="@+id/item_favorites"
+        android:title="@string/menu_sort_by_favorites"/>
+
 
 </menu>

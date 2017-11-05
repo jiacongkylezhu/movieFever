@@ -20,10 +20,17 @@
         </activity>
         <activity
             android:name=".MovieDetailActivity"
-            android:parentActivityName=".MainActivity"
-            android:configChanges="orientation|screenSize|keyboardHidden"/>
-        <activity android:name=".TrailerActivity"
-            android:parentActivityName=".MovieDetailActivity"/>
+            android:configChanges="orientation|screenSize|keyboardHidden" />
+        <activity
+            android:name=".TrailerActivity"
+            android:parentActivityName=".MovieDetailActivity" />
+        <activity android:name=".FavoritesActivity"
+            android:parentActivityName=".MainActivity"/>
+
+        <provider
+            android:authorities="com.kylezhudev.moviefever"
+            android:name="com.kylezhudev.moviefever.data.FavoritesProvider"
+            android:exported="false"/>
     </application>
 
 </manifest>
