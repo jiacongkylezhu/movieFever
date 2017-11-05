@@ -107,22 +107,21 @@ public class FavoritesProvider extends ContentProvider {
                 numDeleted = db.delete(FavoritesContract.FavoritesEntry.TABLE_FAVORITES,
                         selection,
                         selectionArgs);
-                db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '"
-                + FavoritesContract.FavoritesEntry.TABLE_FAVORITES + "'");
+
                 break;
 
             case FAVORITES_WITH_ID:
                 numDeleted = db.delete(FavoritesContract.FavoritesEntry.TABLE_FAVORITES,
-                        FavoritesContract.FavoritesEntry._ID + " = ?",
+                        FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID + " = ?",
                         new String[]{String.valueOf(ContentUris.parseId(uri))});
-                db.execSQL("DELETE FROM SQLITE_SEQUENCE WHERE NAME = '"
-                + FavoritesContract.FavoritesEntry.TABLE_FAVORITES + "'");
+
                 break;
 
             default:
                 throw new UnsupportedOperationException(getContext().getString(R.string.error_unknown_uri));
         }
 
+        getContext().getContentResolver().notifyChange(uri, null);
         return numDeleted;
     }
 

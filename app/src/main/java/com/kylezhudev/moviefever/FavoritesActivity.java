@@ -19,8 +19,6 @@ public class FavoritesActivity extends AppCompatActivity implements LoaderManage
     private GridLayoutManager mGridManager;
     private final int GRID_LAYOUT_COLUMNS = 2;
     private FavoritesAdapter mFavoritesAdapter;
-    private static String mMovieId, mMovieName, mPosterUrl;
-    private static final String INTENT_KEY_MOVIE_ID = "movie_id";
     private static final int CURSOR_LOADER_ID = 1;
 
 
@@ -39,10 +37,6 @@ public class FavoritesActivity extends AppCompatActivity implements LoaderManage
         mRlMovie.setAdapter(mFavoritesAdapter);
 
     }
-
-    //Complete 1 modify mask as favorites button - insert to database with provider - movie id and img id
-    //TODO 2 complete FavoritesActivity query movie id and img id and get URL  - set up adapter use cursor data in views
-    //TODO 3 delete favorites and delete record from database
 
     private void showError() {
         mRlMovie.setVisibility(View.INVISIBLE);
@@ -91,15 +85,8 @@ public class FavoritesActivity extends AppCompatActivity implements LoaderManage
 
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-        if(data != null){
-//            int idIndex = data.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID);
-//            mMovieId = data.getString(idIndex);
-//            int nameIndex = data.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_NAME);
-//            mMovieName = data.getString(nameIndex);
-//            int urlIndex = data.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_POSTER_URL);
-//            mPosterUrl = data.getString(urlIndex);
+        if(data != null && data.getCount() != 0){
             mFavoritesAdapter.swapCursor(data);
-
         }else{
             showError();
         }

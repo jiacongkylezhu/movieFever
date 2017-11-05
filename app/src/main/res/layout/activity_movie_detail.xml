@@ -61,19 +61,19 @@
                  />
 
             <TextView
-                android:id="@+id/tv_released_year"
+                android:id="@+id/tv_released_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/margin_x_small"
                 android:layout_toEndOf="@id/img_detail_movie_thumbnail"
-                android:text="2017"
+                tools:text="2017-1-1"
                 android:textSize="@dimen/subtitle_text_size_M" />
 
             <TextView
                 android:id="@+id/tv_movie_runtime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_released_year"
+                android:layout_below="@id/tv_released_date"
                 android:layout_marginBottom="@dimen/margin_x_small"
                 android:layout_toEndOf="@id/img_detail_movie_thumbnail"
                 android:text="120min"
@@ -87,10 +87,10 @@
                 android:layout_marginBottom="@dimen/margin_x_small"
                 android:layout_toEndOf="@id/img_detail_movie_thumbnail"
                 android:text="7.5/10"
-                android:textSize="@dimen/subtitle_text_size_S" />
+                android:textSize="@dimen/subtitle_text_size_M" />
 
             <Button
-                android:id="@+id/btn_mark_as_favorite"
+                android:id="@+id/btn_mark_as_favorite2"
                 android:layout_width="100dp"
                 android:layout_height="40dp"
                 android:layout_below="@id/tv_rating"
@@ -99,10 +99,18 @@
                 android:text="@string/mark_as_favorite"
                 android:layout_marginTop="@dimen/margin_M"
                 android:textColor="@color/secondary_text"
+                android:onClick="onClickAddFavorite"
+                android:visibility="gone"/>
+
+            <ImageButton
+                android:id="@+id/btn_mark_as_favorite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_star_border_black_48dp"
+                android:background="@color/white_background"
+                android:layout_below="@id/tv_rating"
+                android:layout_toEndOf="@id/img_detail_movie_thumbnail"
                 android:onClick="onClickAddFavorite"/>
-
-
-
 
         </RelativeLayout>
 

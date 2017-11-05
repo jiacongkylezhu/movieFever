@@ -16,8 +16,8 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -55,7 +55,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private ImageView mImgNoTrailer;
     private ImageView mPosterThumbnail;
     private ImageView mDivider0;
-    private Button mMarkAsFavorite;
+    private ImageButton mMarkAsFavorite;
     private RelativeLayout mRlMoreTrailer;
     private YouTubeThumbnailView mTrailerThumbnail;
     private FrameLayout mFlYouTube;
@@ -75,13 +75,17 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private YouTubePlayer mYouTubePlayer;
     private YouTubePlayerSupportFragment mYouTube1stTrailerFragment;
     private Cursor mFavoritesResults;
-    LoaderManager.LoaderCallbacks mThumbnailLoaderListener;
+    private LoaderManager.LoaderCallbacks mThumbnailLoaderListener;
     private YouTubeThumbnailLoader mYouTubeThumbnailLoader;
+    private LoaderManager.LoaderCallbacks<Cursor> mFavoritesResultsLoaderListener;
+
 
     private static String mName;
     public static final String TRAILER_INTENT_KEY = "trailer_key";
     private static final String TRAILER_PRE_KEY = "trailer_id";
     private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
+    private static boolean isInitialized = false;
+    private static boolean isFavorite = false;
 
 
     @Override
@@ -90,7 +94,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
         setContentView(R.layout.activity_movie_detail);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTvMovieTitle = (TextView) findViewById(R.id.tv_movie_detail_title);
-        mTvReleasedYear = (TextView) findViewById(R.id.tv_released_year);
+        mTvReleasedYear = (TextView) findViewById(R.id.tv_released_date);
         mTvRunTime = (TextView) findViewById(R.id.tv_movie_runtime);
         mTvRating = (TextView) findViewById(R.id.tv_rating);
         mTvOverView = (TextView) findViewById(R.id.tv_movie_overview);
@@ -102,7 +106,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mPosterThumbnail = (ImageView) findViewById(R.id.img_detail_movie_thumbnail);
         mImgNoTrailer = (ImageView) findViewById(R.id.img_detail_not_available);
         mDivider0 = (ImageView) findViewById(R.id.img_divider_0);
-        mMarkAsFavorite = (Button) findViewById(R.id.btn_mark_as_favorite);
+        mMarkAsFavorite = (ImageButton) findViewById(R.id.btn_mark_as_favorite);
         mRlMoreTrailer = (RelativeLayout) findViewById(R.id.relative_layout_detail_trailer_1);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_detail_load_indicator);
         mTrailerThumbnail = (YouTubeThumbnailView) findViewById(R.id.trailer1_thumbnail);
@@ -119,6 +123,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
 //        getSupportLoaderManager().restartLoader(MOVIE_TRAILER_LOADER_ID, null, this);
         setThumbnailLoader();
         getSupportLoaderManager().initLoader(MOVIE_TRAILER_LOADER_ID, null, mThumbnailLoaderListener);
+        isInFavorites();
 
         mTrailerThumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -365,13 +370,14 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
             String releaseDate = JsonUtil.getDetailReleaseDate(loadedData);
             String releaseYear = releaseDate.substring(0, 4);
-            mTvReleasedYear.setText(releaseYear);
+//            mTvReleasedYear.setText(releaseYear);
+            mTvReleasedYear.setText(releaseDate);
             mName = JsonUtil.getDetailTitle(loadedData);
             mTvMovieTitle.setText(mName);
             mTvRunTime.setText(JsonUtil.getDetailRunTime(loadedData));
-            mTvRunTime.append("mins");
+            mTvRunTime.append(getBaseContext().getString(R.string.minutes));
             mTvRating.setText(JsonUtil.getDetailVoteAverage(loadedData));
-            mTvRating.append("/10");
+            mTvRating.append(getBaseContext().getString(R.string.max_score));
             mTvOverView.setText(JsonUtil.getDetailOverview(loadedData));
         }
     }
@@ -473,7 +479,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     public void onClickAddFavorite(View view) {
 
-        LoaderManager.LoaderCallbacks<Cursor> favoritesResultsLoaderListener
+
+        final LoaderManager.LoaderCallbacks<Cursor> favoritesResultsLoaderListener
                 = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
             public Loader<Cursor> onCreateLoader(int id, Bundle args) {
@@ -482,11 +489,11 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
                     @Override
                     protected void onStartLoading() {
-                        if (favoritesCursor != null) {
-                            deliverResult(favoritesCursor);
-                        } else {
+//                        if (favoritesCursor != null) {
+//                            deliverResult(favoritesCursor);
+//                        } else {
                             forceLoad();
-                        }
+//                        }
                     }
 
                     @Override
@@ -504,6 +511,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
                                     null,
                                     null,
                                     null);
+
+
                             return favoritesCursor;
 
                         } catch (Exception e) {
@@ -514,13 +523,15 @@ public class MovieDetailActivity extends AppCompatActivity implements
                         return favoritesCursor;
                     }
 
-                    @Override
-                    public void deliverResult(Cursor data) {
-                        favoritesCursor = data;
-                        super.deliverResult(data);
-                    }
+//                    @Override
+//                    public void deliverResult(Cursor data) {
+//                        favoritesCursor = data;
+//                        super.deliverResult(data);
+//                    }
                 };
             }
+
+
 
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
@@ -532,8 +543,15 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     int movieIdIndex = mFavoritesResults.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID);
                     String savedMovieId = mFavoritesResults.getString(movieIdIndex);
                     if (savedMovieId.equals(mMovieId)) {
-                        //TODO can change it to already-in-favorites icon
-                        Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.already_in_favorites), Toast.LENGTH_SHORT).show();
+
+                        Uri uri = Uri.withAppendedPath(FavoritesContract.FavoritesEntry.CONTENT_URI, mMovieId);
+                        int numDeleted = getContentResolver().delete(uri,
+                                null,
+                                null);
+
+                        Log.i(LOG_TAG, "Deleted " + numDeleted + " rows");
+                        isFavorite = false;
+                        Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.removed_from_favorites), Toast.LENGTH_SHORT).show();
                     }
 
                 } else {
@@ -542,9 +560,11 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     newFavoriteValue.put(FavoritesContract.FavoritesEntry.COLUMN_NAME, mName);
                     newFavoriteValue.put(FavoritesContract.FavoritesEntry.COLUMN_POSTER_URL, mPosterUrlString);
                     getContentResolver().insert(FavoritesContract.FavoritesEntry.CONTENT_URI, newFavoriteValue);
-                    //TODO can change it to added-to-favorites icon
+                    isFavorite = true;
                     Toast.makeText(getBaseContext(), getBaseContext().getString(R.string.added_to_favorites), Toast.LENGTH_SHORT).show();
                 }
+
+                setFavoriteIcon(isFavorite);
 
 
             }
@@ -555,10 +575,99 @@ public class MovieDetailActivity extends AppCompatActivity implements
             }
         };
 
-        getSupportLoaderManager().initLoader(FAVORITES_LOADER_ID, null, favoritesResultsLoaderListener);
+
+            getSupportLoaderManager().restartLoader(FAVORITES_LOADER_ID, null, favoritesResultsLoaderListener);
 
 
     }
+
+    private boolean isInFavorites(){
+
+        mFavoritesResultsLoaderListener
+                = new LoaderManager.LoaderCallbacks<Cursor>() {
+            @Override
+            public Loader<Cursor> onCreateLoader(int id, Bundle args) {
+                return new AsyncTaskLoader<Cursor>(getBaseContext()) {
+                    Cursor favoritesCursor = null;
+
+                    @Override
+                    protected void onStartLoading() {
+
+                        forceLoad();
+
+                    }
+
+                    @Override
+                    public Cursor loadInBackground() {
+
+                        try {
+
+                            Uri uri = Uri.withAppendedPath(FavoritesContract.FavoritesEntry.CONTENT_URI, mMovieId);
+                            favoritesCursor = getContentResolver().query(uri,
+                                    null,
+                                    null,
+                                    null,
+                                    null);
+
+
+                            return favoritesCursor;
+
+                        } catch (Exception e) {
+                            Log.i(LOG_TAG, "Data is not in database or failed to asynchronously load data");
+                            e.printStackTrace();
+                        }
+
+                        return favoritesCursor;
+                    }
+
+                };
+            }
+
+
+            //TODO complete favorite icons
+            @Override
+            public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
+                mFavoritesResults = data;
+                mFavoritesResults.moveToFirst();
+
+                if (data.getCount() != 0) {
+                    Log.i(LOG_TAG, "Cursor loaded data: " + data.toString());
+                    int movieIdIndex = mFavoritesResults.getColumnIndex(FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID);
+                    String savedMovieId = mFavoritesResults.getString(movieIdIndex);
+                    if (savedMovieId.equals(mMovieId)) {
+                        isFavorite = true;
+                    }
+                } else {
+                    isFavorite =false;
+
+                }
+
+                setFavoriteIcon(isFavorite);
+
+
+            }
+
+            @Override
+            public void onLoaderReset(Loader<Cursor> loader) {
+                mFavoritesResults = null;
+            }
+        };
+
+        getSupportLoaderManager().initLoader(FAVORITES_LOADER_ID, null, mFavoritesResultsLoaderListener);
+
+        return isFavorite;
+    }
+
+    private void setFavoriteIcon(boolean isFavorite){
+        if(!isFavorite){
+            mMarkAsFavorite.setImageResource(R.drawable.ic_star_border_black_48dp);
+        }else{
+            mMarkAsFavorite.setImageResource(R.drawable.ic_star_black_48dp);
+        }
+
+    }
+
+
 
 
     private final class ThumbnailListener implements
