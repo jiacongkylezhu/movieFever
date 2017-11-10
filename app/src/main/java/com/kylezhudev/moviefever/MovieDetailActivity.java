@@ -49,19 +49,19 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private TextView mTvRating;
     private TextView mTvOverView;
     private TextView mTvTrailerName;
-    private TextView mTvNoTrailer;
+//    private TextView mTvNoTrailer;
     private TextView mTvTrailerTitle;
     private TextView mTvErrorMessage;
-    private ImageView mImgNoTrailer;
+//    private ImageView mImgNoTrailer;
     private ImageView mPosterThumbnail;
     private ImageView mDivider0;
     private ImageButton mMarkAsFavorite;
     private RelativeLayout mRlMoreTrailer;
     private YouTubeThumbnailView mTrailerThumbnail;
     private FrameLayout mFlYouTube;
-
-
     private ProgressBar mProgressBar;
+    private ImageView mErrorIcon;
+
     public static final String KEY_MOVIE_ID = "id";
     public static final String KEY_POSTER_URL = "posterUrl";
     private static final int MOVIE_DETAIL_LOADER_ID = 2;
@@ -84,7 +84,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
     public static final String TRAILER_INTENT_KEY = "trailer_key";
     private static final String TRAILER_PRE_KEY = "trailer_id";
     private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
-    private static boolean isInitialized = false;
     private static boolean isFavorite = false;
 
 
@@ -98,17 +97,18 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mTvRunTime = (TextView) findViewById(R.id.tv_movie_runtime);
         mTvRating = (TextView) findViewById(R.id.tv_rating);
         mTvOverView = (TextView) findViewById(R.id.tv_movie_overview);
-        mTvNoTrailer = (TextView) findViewById(R.id.tv_no_trailer);
+//        mTvNoTrailer = (TextView) findViewById(R.id.tv_no_trailer);
         mTvTrailerName = (TextView) findViewById(R.id.tv_trailer_1);
         mTvTrailerTitle = (TextView) findViewById(R.id.tv_trailers_title);
         mTvErrorMessage = (TextView) findViewById(R.id.tv_detail_error);
 
         mPosterThumbnail = (ImageView) findViewById(R.id.img_detail_movie_thumbnail);
-        mImgNoTrailer = (ImageView) findViewById(R.id.img_detail_not_available);
+//        mImgNoTrailer = (ImageView) findViewById(R.id.img_detail_not_available);
         mDivider0 = (ImageView) findViewById(R.id.img_divider_0);
         mMarkAsFavorite = (ImageButton) findViewById(R.id.btn_mark_as_favorite);
         mRlMoreTrailer = (RelativeLayout) findViewById(R.id.relative_layout_detail_trailer_1);
         mProgressBar = (ProgressBar) findViewById(R.id.pb_detail_load_indicator);
+        mErrorIcon = (ImageView) findViewById(R.id.img_info_icon);
         mTrailerThumbnail = (YouTubeThumbnailView) findViewById(R.id.trailer1_thumbnail);
         mFlYouTube = (FrameLayout) findViewById(R.id.fl_youtube);
 
@@ -209,7 +209,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
 //
 //                    try {
 //                        videoJsonObject = NetworkUtil.getRawVideoJson(
-//                                NetworkUtil.getTailerUrl(getContext(), mMovieId));
+//                                NetworkUtil.getTrailerUrl(getContext(), mMovieId));
 //                        mTrailerJsonString = videoJsonObject.toString();
 //                        return mTrailerJsonString;
 //                    } catch (IOException e) {
@@ -286,7 +286,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
                         try {
                             videoJsonObject = NetworkUtil.getRawVideoJson(
-                                    NetworkUtil.getTailerUrl(getContext(), mMovieId));
+                                    NetworkUtil.getTrailerUrl(getContext(), mMovieId));
                             mTrailerJsonString = videoJsonObject.toString();
                             return mTrailerJsonString;
                         } catch (IOException e) {
@@ -328,6 +328,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mTvMovieTitle.setText("");
         hideDetailUI();
         mTvErrorMessage.setVisibility(View.VISIBLE);
+        mErrorIcon.setVisibility(View.VISIBLE);
     }
 
     private void hideDetailUI() {
@@ -360,6 +361,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     private void setDetailResults(String loadedData) throws MalformedURLException, JSONException {
         mTvErrorMessage.setVisibility(View.INVISIBLE);
+        mErrorIcon.setVisibility(View.INVISIBLE);
         if (mPosterUrlString != null) {
             showDetailUI();
             Picasso
@@ -397,8 +399,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     private void showTrailer(String loadedVideoJsonString) throws JSONException {
-        mImgNoTrailer.setVisibility(View.INVISIBLE);
-        mTvNoTrailer.setVisibility(View.INVISIBLE);
+//        mImgNoTrailer.setVisibility(View.INVISIBLE);
+//        mTvNoTrailer.setVisibility(View.INVISIBLE);
         mFlYouTube.setVisibility(View.VISIBLE);
 
         String[] trailerNames = JsonUtil.getTrailerName(loadedVideoJsonString);

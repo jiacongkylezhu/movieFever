@@ -19,6 +19,8 @@ public final class JsonUtil {
     private static final String MF_OVERVIEW = "overview";
     private static final String VIDEO_KEY = "key";
     private static final String VIDEO_NAME = "name";
+    private static final String REVIEW_AUTHOR = "author";
+    private static final String REVIEW_CONTENT = "content";
 
 
     public static String[] getPosterPathFromJson(String movieResults) throws JSONException {
@@ -101,6 +103,8 @@ public final class JsonUtil {
 
 
 
+
+
     /**
      * getDetailFromJson
      * reuse for getting movie details
@@ -112,5 +116,44 @@ public final class JsonUtil {
         Log.i("DetailJsonResults", "String " + resultString);
         return resultString;
     }
+
+    public static String[] getAuthorFromJson(String reviewResult) throws JSONException {
+        return getReviewsFromJson(reviewResult, REVIEW_AUTHOR);
+    }
+
+    public static String[] getReviewFromJson(String reviewResult) throws JSONException {
+        return getReviewsFromJson(reviewResult, REVIEW_CONTENT);
+    }
+
+
+
+
+
+
+    /**
+     *
+     * Reuse for getting review authors and contents
+     * @param reviewResult
+     * @param path
+     * @return
+     * @throws JSONException
+     */
+
+
+
+    private static String[] getReviewsFromJson(String reviewResult, String path) throws JSONException {
+        JSONObject reviewRawJson = new JSONObject(reviewResult);
+        JSONArray reviewJsonArray = reviewRawJson.getJSONArray(path);
+        String[] resultString = new String[reviewJsonArray.length()];
+
+        for(int i = 0; i < resultString.length; i++){
+            JSONObject pathJson = reviewJsonArray.getJSONObject(i);
+            resultString[i] = pathJson.getString(path);
+        }
+
+        return resultString;
+    }
+
+
 
 }

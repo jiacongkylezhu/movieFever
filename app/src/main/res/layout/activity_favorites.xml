@@ -44,7 +44,7 @@
             android:layout_height="wrap_content"
             android:text="@string/no_favorite"
             android:layout_gravity="center"
-            android:layout_marginLeft="@dimen/margin_x_small"/>
+            android:layout_marginLeft="@dimen/margin_S"/>
     </LinearLayout>
 
 

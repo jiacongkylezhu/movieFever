@@ -7,17 +7,26 @@
     <string name="trailer_title">Trailers:</string>
     <string name="more">More:</string>
     <string name="movie_title">Movie Title</string>
+    <string name="release_date">Release: </string>
+    <string name="run_time">Run Time: </string>
+    <string name="rating_score">Rating: </string>
+
     <string name="trailer_1">Trailer 1</string>
     <string name="trailer_2">Trailer 2</string>
 
     <string name="minutes"> mins</string>
-    <string name="max_score">/10</string>
+    <string name="max_score">8/10</string>
     <string name="mark_as_favorite">MARK AS FAVORITE</string>
     <string name="no_trailer_available">No Trailer Available</string>
     <string name="description">Movie Overview. This is where the description located. It has to be long and contains a bunch of texts</string>
 
 
     <string name="videos">videos</string>
+    <string name="review_title">Review:</string>
+    <string name="author">Author</string>
+    <string name="review">Sample review. This is a sample review for design purpose only</string>
+
+
 
     <!---
        Error Messages
@@ -37,6 +46,9 @@
     <string name="no_favorite">Please add movies to Favorites</string>
     <string name="removed_from_favorites">Removed movie from favorites</string>
     <string name="added_to_favorites">Added to favorites</string>
+
+
+
 
 
 </resources>

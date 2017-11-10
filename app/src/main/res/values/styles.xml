@@ -12,6 +12,7 @@
         <item name="listPreferredItemHeight">10dp</item>
         <item name="listPreferredItemPaddingLeft">5dp</item>
         <item name="listPreferredItemPaddingRight">5dp</item>
+        <item name="android:textViewStyle">@style/AppFontFamily</item>
     </style>
 
 
@@ -36,6 +37,10 @@
     </style>
     <style name="ActionBarMenu" parent = "Widget.AppCompat.ActionBar">
 
+    </style>
+
+    <style name="AppFontFamily">
+        <item name="android:fontFamily">casual</item>
     </style>
 
 

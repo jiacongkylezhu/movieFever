@@ -33,6 +33,7 @@ public final class NetworkUtil {
     private static final String POPULAR = "popular";
     private static final String TOP_RATE = "top_rated";
     private static final String UPCOMING = "upcoming";
+    private static final String REVIEW = "reviews";
 
 //    private static final String IMG_SIZE = "w185";
     private static final String IMG_SIZE = "w780";
@@ -83,7 +84,7 @@ public final class NetworkUtil {
         return imgUrl;
     }
 
-    public static URL getTailerUrl(Context context, String movieId) throws MalformedURLException {
+    public static URL getTrailerUrl(Context context, String movieId) throws MalformedURLException {
         Uri builtUrl = Uri.parse(MOVIE_SEARCH_BASE_URL)
                 .buildUpon()
 //                .appendEncodedPath(movieId)
@@ -189,6 +190,26 @@ public final class NetworkUtil {
                 .build();
 
         return new URL(builtUri.toString());
+    }
+
+    public static URL getReviewUrl(String id) throws MalformedURLException {
+        Uri builtUri = Uri.parse(MOVIE_SEARCH_BASE_URL)
+                .buildUpon()
+                .appendPath(id)
+                .appendPath(REVIEW)
+                .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
+                .appendQueryParameter(LANGUAGE, EN_US)
+                .build();
+        return new URL(builtUri.toString());
+    }
+
+    public static JSONObject getReviewJson(URL url) throws IOException, JSONException {
+        OkHttpClient okHttpClient = new OkHttpClient();
+        Request reviewJsonRequest = new Request.Builder().url(url).build();
+        Response reviewJsonResponse = okHttpClient.newCall(reviewJsonRequest).execute();
+
+        JSONObject reviewJson = new JSONObject(reviewJsonResponse.body().string());
+        return reviewJson;
     }
 
 
