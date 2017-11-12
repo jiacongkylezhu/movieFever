@@ -10,9 +10,11 @@ import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -24,56 +26,72 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-public class ReviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<String>{
+public class ReviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
+    private static final String LOG_TAG = ReviewFragment.class.getSimpleName();
     private RecyclerView mRvReviewList;
     private TextView tvReviewTitle;
-    private ReviewListAdapter mReviewAdatper;
+    private ReviewListAdapter reviewListAdapter;
     private RecyclerView.LayoutManager mLayoutManger;
+    private TextView mTvNoReview;
+    private ImageView mIvInfoIcon;
     private Context mContext;
     private ProgressBar mProgressBar;
-    private String movieId;
-
+    private static String mMovieId;
+    private static String mReviewRawString = null;
+    private static final int REVIEW_LOADER_ID = 1;
 
 
     public ReviewFragment() {
         // Required empty public constructor
-        mContext = getContext();
+        mContext = getActivity();
+    }
+
+    public ReviewFragment newInstance(String key, String movieId) {
+        ReviewFragment reviewFragment = new ReviewFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString(key, movieId);
+        reviewFragment.setArguments(bundle);
+        return reviewFragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        Bundle bundle = this.getArguments();
+        if (bundle != null) {
+            mMovieId = bundle.getString(MovieDetailActivity.KEY_MOVIE_ID);
+            Log.i(LOG_TAG, "Movie ID " + mMovieId);
+        }
 
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+
         View rootView = inflater.inflate(R.layout.fragment_review, container, false);
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.pb_review_progress_bar);
+        mTvNoReview = (TextView) rootView.findViewById(R.id.tv_no_review);
+        mIvInfoIcon = (ImageView) rootView.findViewById(R.id.img_review_info);
         mRvReviewList = (RecyclerView) rootView.findViewById(R.id.rv_review_list);
         mLayoutManger = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
-        mReviewAdatper = new ReviewListAdapter();
-        mRvReviewList.setLayoutManager(mLayoutManger);
-        mRvReviewList.setAdapter(mReviewAdatper);
-
-
-
+        reviewListAdapter = new ReviewListAdapter();
+        getLoaderManager().initLoader(REVIEW_LOADER_ID, null, this);
         return rootView;
     }
 
 
-
     @Override
     public Loader<String> onCreateLoader(int id, Bundle args) {
-        return new AsyncTaskLoader<String>(mContext) {
-            String jsonString;
+        return new AsyncTaskLoader<String>(getActivity()) {
+
+
             @Override
             protected void onStartLoading() {
-                if (jsonString != null){
-                    deliverResult(jsonString);
+                mProgressBar.setVisibility(View.VISIBLE);
+                if (mReviewRawString != null) {
+                    deliverResult(mReviewRawString);
                 }
                 mProgressBar.setVisibility(View.VISIBLE);
                 forceLoad();
@@ -82,8 +100,9 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
             @Override
             public String loadInBackground() {
                 try {
-                    URL url = NetworkUtil.getReviewUrl(movieId);
-                    jsonString = NetworkUtil.getReviewJson(url).toString();
+                    URL url = NetworkUtil.getReviewUrl(mMovieId);
+                    mReviewRawString = NetworkUtil.getReviewJson(url).toString();
+                    return mReviewRawString;
                 } catch (MalformedURLException e) {
                     e.printStackTrace();
                 } catch (JSONException e) {
@@ -91,20 +110,37 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                return null;
+                return mReviewRawString;
             }
         };
     }
 
-    //TODO complete onLoadFinished and figure out how to pass movie id from detail activity to this fragment.
 
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        if (mReviewRawString != null) {
+            try {
+                reviewListAdapter.saveReviewResults(data);
+                mRvReviewList.setLayoutManager(mLayoutManger);
+                mRvReviewList.setAdapter(reviewListAdapter);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            showNoReview();
+        }
 
     }
 
     @Override
     public void onLoaderReset(Loader<String> loader) {
+        loader = null;
+    }
 
+    private void showNoReview() {
+        mTvNoReview.setVisibility(View.VISIBLE);
+        mIvInfoIcon.setVisibility(View.VISIBLE);
     }
 }

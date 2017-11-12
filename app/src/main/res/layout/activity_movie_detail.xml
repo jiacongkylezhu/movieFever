@@ -248,8 +248,9 @@
                 tools:text="@string/trailer_1" />
         </RelativeLayout>
 
-        <fragment
-            android:layout_width="match_parent"
+        <FrameLayout
+            android:id="@+id/frag_detail_placeholder"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/margin_M"
             app:layout_constraintTop_toBottomOf="@+id/relative_layout_detail_trailer_1"

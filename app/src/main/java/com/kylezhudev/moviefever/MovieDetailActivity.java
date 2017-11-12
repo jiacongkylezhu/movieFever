@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
@@ -86,6 +87,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
     private static boolean isFavorite = false;
 
+    private ReviewFragment mReviewFragment;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +137,15 @@ public class MovieDetailActivity extends AppCompatActivity implements
         });
 
 
+
+        setFragment();
+    }
+
+    private void setFragment() {
+        FragmentTransaction reviewFragmentTran = getSupportFragmentManager().beginTransaction();
+        mReviewFragment = new ReviewFragment().newInstance(KEY_MOVIE_ID, mMovieId);
+        reviewFragmentTran.replace(R.id.frag_detail_placeholder, mReviewFragment);
+        reviewFragmentTran.commit();
     }
 
 

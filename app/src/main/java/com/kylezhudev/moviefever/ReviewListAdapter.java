@@ -12,7 +12,7 @@ import com.kylezhudev.moviefever.utilities.JsonUtil;
 import org.json.JSONException;
 
 public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ReviewHolder> {
-    private String[] mAuthor, mReview;
+    private String[] mAuthors, mReviews;
 
 
     public class ReviewHolder extends RecyclerView.ViewHolder {
@@ -20,7 +20,6 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Re
 
         public ReviewHolder(View itemView) {
             super(itemView);
-
             mTvAuthor = (TextView) itemView.findViewById(R.id.tv_author);
             mTvReview = (TextView) itemView.findViewById(R.id.tv_review);
         }
@@ -34,26 +33,29 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Re
 
     @Override
     public void onBindViewHolder(ReviewHolder holder, int position) {
-        if (mAuthor != null && mReview != null){
-            holder.mTvAuthor.setText(mAuthor[position]);
-            holder.mTvReview.setText(mReview[position]);
+        if(mAuthors != null && mAuthors.length != 0 ){
+            holder.mTvAuthor.setText(mAuthors[position] + " :");
+        }
+
+        if ( mReviews != null && mReviews.length != 0){
+            holder.mTvReview.setText(mReviews[position]);
         }
     }
 
     @Override
     public int getItemCount() {
-        if (mReview == null) {
+        if (mReviews == null) {
             return 0;
         } else {
-            return mReview.length;
+            return mReviews.length;
         }
 
     }
 
     public void saveReviewResults(String reviewJsonString) throws JSONException {
         if (reviewJsonString != null) {
-            mAuthor = JsonUtil.getAuthorFromJson(reviewJsonString);
-            mReview = JsonUtil.getReviewFromJson(reviewJsonString);
+            mAuthors = JsonUtil.getAuthorFromJson(reviewJsonString);
+            mReviews = JsonUtil.getReviewFromJson(reviewJsonString);
         }
     }
 

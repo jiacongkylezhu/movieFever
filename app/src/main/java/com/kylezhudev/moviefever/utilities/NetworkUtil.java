@@ -24,6 +24,7 @@ import okhttp3.Response;
 
 public final class NetworkUtil {
     private static final String KEY_API = "api_key";
+    private static final String LOG_TAG = NetworkUtil.class.getSimpleName();
 
 
 
@@ -200,6 +201,7 @@ public final class NetworkUtil {
                 .appendQueryParameter(KEY_API, APIKeys.MOVIE_API_KEY)
                 .appendQueryParameter(LANGUAGE, EN_US)
                 .build();
+        Log.i(LOG_TAG, "Review URL: " + builtUri.toString());
         return new URL(builtUri.toString());
     }
 

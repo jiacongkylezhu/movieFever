@@ -143,7 +143,7 @@ public final class JsonUtil {
 
     private static String[] getReviewsFromJson(String reviewResult, String path) throws JSONException {
         JSONObject reviewRawJson = new JSONObject(reviewResult);
-        JSONArray reviewJsonArray = reviewRawJson.getJSONArray(path);
+        JSONArray reviewJsonArray = reviewRawJson.getJSONArray(MF_RESULT);
         String[] resultString = new String[reviewJsonArray.length()];
 
         for(int i = 0; i < resultString.length; i++){
