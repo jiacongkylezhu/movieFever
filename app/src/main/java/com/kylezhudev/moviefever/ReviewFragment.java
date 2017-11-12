@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.kylezhudev.moviefever.utilities.JsonUtil;
 import com.kylezhudev.moviefever.utilities.NetworkUtil;
 
 import org.json.JSONException;
@@ -29,7 +30,7 @@ import java.net.URL;
 public class ReviewFragment extends Fragment implements LoaderManager.LoaderCallbacks<String> {
     private static final String LOG_TAG = ReviewFragment.class.getSimpleName();
     private RecyclerView mRvReviewList;
-    private TextView tvReviewTitle;
+    private TextView mTvReviewTitle;
     private ReviewListAdapter reviewListAdapter;
     private RecyclerView.LayoutManager mLayoutManger;
     private TextView mTvNoReview;
@@ -74,6 +75,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
         mProgressBar = (ProgressBar) rootView.findViewById(R.id.pb_review_progress_bar);
         mTvNoReview = (TextView) rootView.findViewById(R.id.tv_no_review);
         mIvInfoIcon = (ImageView) rootView.findViewById(R.id.img_review_info);
+        mTvReviewTitle = (TextView) rootView.findViewById(R.id.tv_review_title);
         mRvReviewList = (RecyclerView) rootView.findViewById(R.id.rv_review_list);
         mLayoutManger = new LinearLayoutManager(mContext, LinearLayoutManager.VERTICAL, false);
         reviewListAdapter = new ReviewListAdapter();
@@ -119,17 +121,31 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         mProgressBar.setVisibility(View.INVISIBLE);
-        if (mReviewRawString != null) {
+        if (data != null) {
+            String[] reviewResult;
             try {
-                reviewListAdapter.saveReviewResults(data);
-                mRvReviewList.setLayoutManager(mLayoutManger);
-                mRvReviewList.setAdapter(reviewListAdapter);
+                 reviewResult = new String[JsonUtil.getReviewResultJson(data).length];
+                Log.i(LOG_TAG, "Review: " + data);
+                if(reviewResult.length != 0){
+                    hideNoReview();
+                    try {
+                        reviewListAdapter.saveReviewResults(data);
+                        mRvReviewList.setLayoutManager(mLayoutManger);
+                        mRvReviewList.setAdapter(reviewListAdapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    showNoReview();
+                }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-        } else {
-            showNoReview();
+
+//        }else {
+//            showNoReview();
         }
 
     }
@@ -142,5 +158,12 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     private void showNoReview() {
         mTvNoReview.setVisibility(View.VISIBLE);
         mIvInfoIcon.setVisibility(View.VISIBLE);
+        mTvReviewTitle.setVisibility(View.INVISIBLE);
+    }
+
+    private void hideNoReview(){
+        mTvReviewTitle.setVisibility(View.VISIBLE);
+        mTvNoReview.setVisibility(View.INVISIBLE);
+        mIvInfoIcon.setVisibility(View.INVISIBLE);
     }
 }

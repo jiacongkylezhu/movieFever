@@ -13,6 +13,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -374,12 +375,18 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private void setDetailResults(String loadedData) throws MalformedURLException, JSONException {
         mTvErrorMessage.setVisibility(View.INVISIBLE);
         mErrorIcon.setVisibility(View.INVISIBLE);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        double heightDouble = width * 1.5;
+        int height = (int) heightDouble;
+
         if (mPosterUrlString != null) {
             showDetailUI();
             Picasso
                     .with(this)
                     .load(mPosterUrlString)
-                    .fit()
+                    .resize(width, height)
                     .into(mPosterThumbnail);
 
             String releaseDate = JsonUtil.getDetailReleaseDate(loadedData);

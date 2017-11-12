@@ -126,10 +126,6 @@ public final class JsonUtil {
     }
 
 
-
-
-
-
     /**
      *
      * Reuse for getting review authors and contents
@@ -153,6 +149,13 @@ public final class JsonUtil {
 
         return resultString;
     }
+
+    public static String[] getReviewResultJson(String reviewResult) throws JSONException {
+        JSONObject reviewRawJson = new JSONObject(reviewResult);
+        JSONArray reviewJsonArray = reviewRawJson.getJSONArray(MF_RESULT);
+        return new String[reviewJsonArray.length()];
+    }
+
 
 
 

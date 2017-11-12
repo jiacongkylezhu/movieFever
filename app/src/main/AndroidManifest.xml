@@ -21,6 +21,7 @@
         <activity
             android:name=".MovieDetailActivity"
             android:label=""
+            android:theme="@style/AppTheme.ActionBar.Transparent"
             android:configChanges="orientation|screenSize|keyboardHidden" />
         <activity
             android:name=".TrailerActivity"
