@@ -42,12 +42,28 @@
     <style name="AppFontFamily">
         <item name="android:fontFamily">casual</item>
     </style>
-    
+
+
     <style name="AppTheme.ActionBar.Transparent" parent="AppTheme">
         <item name="android:windowContentOverlay">@null</item>
         <item name="windowActionBarOverlay">true</item>
         <item name="colorPrimary">@android:color/transparent</item>
     </style>
+
+    <style name="AppTheme.PopupOverLay" parent="ThemeOverlay.AppCompat.Light"/>
+    <style name="AppTheme.AppBarOverLay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    
+    <style name="MenuTitleTextAppearance">
+        <item name="android:textColor">@color/secondary_text</item>
+        <item name="android:textSize">22sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="MenuFont">
+        <item name="android:fontFamily">casual</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 
 
 

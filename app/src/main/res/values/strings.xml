@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Movie Fever</string>
-    <string name="menu_sort_by_upcoming">UPCOMING</string>
-    <string name="menu_sort_by_popularity">POPULAR</string>
-    <string name="menu_sort_by_top_rated">TOP RATED</string>
-    <string name="menu_sort_by_favorites">FAVORITES</string>
+    <string name="menu_sort_by_upcoming">Up Coming</string>
+    <string name="menu_sort_by_popularity">Popular</string>
+    <string name="menu_sort_by_top_rated">Top Rated</string>
+    <string name="menu_favorites">Favorites</string>
+    <string name="menu_sort_by_title">Sort By</string>
     <string name="trailer_title">Trailers:</string>
     <string name="more">More:</string>
     <string name="movie_title">Movie Title</string>
@@ -26,6 +27,8 @@
     <string name="author">Author</string>
     <string name="review">Sample review. This is a sample review for design purpose only</string>
 
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 
 
     <!---
@@ -47,9 +50,6 @@
     <string name="removed_from_favorites">Removed movie from favorites</string>
     <string name="added_to_favorites">Added to favorites</string>
     <string name="no_review">This movie doesn\'t have any review yet</string>
-
-
-
 
 
 </resources>

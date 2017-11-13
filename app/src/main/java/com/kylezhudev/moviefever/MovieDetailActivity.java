@@ -386,11 +386,12 @@ public class MovieDetailActivity extends AppCompatActivity implements
             Picasso
                     .with(this)
                     .load(mPosterUrlString)
-                    .resize(width, height)
+//                    .resize(width, height)
+//                    .centerCrop()
                     .into(mPosterThumbnail);
 
             String releaseDate = JsonUtil.getDetailReleaseDate(loadedData);
-            String releaseYear = releaseDate.substring(0, 4);
+//            String releaseYear = releaseDate.substring(0, 4);
 //            mTvReleasedYear.setText(releaseYear);
             mTvReleasedYear.setText(releaseDate);
             mName = JsonUtil.getDetailTitle(loadedData);
@@ -405,10 +406,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
 
     private void noTrailer() {
-//        mImgNoTrailer.setVisibility(View.VISIBLE);
-//        mTvNoTrailer.setVisibility(View.VISIBLE);
-//        mTvTrailerName.setVisibility(View.INVISIBLE);
-//        mFlYouTube.setVisibility(View.INVISIBLE);
         ((ViewGroup) mFlYouTube.getParent()).removeView(mFlYouTube);
     }
 
@@ -418,8 +415,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
     }
 
     private void showTrailer(String loadedVideoJsonString) throws JSONException {
-//        mImgNoTrailer.setVisibility(View.INVISIBLE);
-//        mTvNoTrailer.setVisibility(View.INVISIBLE);
         mFlYouTube.setVisibility(View.VISIBLE);
 
         String[] trailerNames = JsonUtil.getTrailerName(loadedVideoJsonString);
@@ -629,15 +624,12 @@ public class MovieDetailActivity extends AppCompatActivity implements
                                     null,
                                     null,
                                     null);
-
-
                             return favoritesCursor;
 
                         } catch (Exception e) {
                             Log.i(LOG_TAG, "Data is not in database or failed to asynchronously load data");
                             e.printStackTrace();
                         }
-
                         return favoritesCursor;
                     }
 
@@ -660,12 +652,8 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     }
                 } else {
                     isFavorite =false;
-
                 }
-
                 setFavoriteIcon(isFavorite);
-
-
             }
 
             @Override
@@ -675,15 +663,14 @@ public class MovieDetailActivity extends AppCompatActivity implements
         };
 
         getSupportLoaderManager().initLoader(FAVORITES_LOADER_ID, null, mFavoritesResultsLoaderListener);
-
         return isFavorite;
     }
 
     private void setFavoriteIcon(boolean isFavorite){
         if(!isFavorite){
-            mMarkAsFavorite.setImageResource(R.drawable.ic_star_border_black_48dp);
+            mMarkAsFavorite.setImageResource(R.drawable.ic_bookmark_border_black_24dp);
         }else{
-            mMarkAsFavorite.setImageResource(R.drawable.ic_star_black_48dp);
+            mMarkAsFavorite.setImageResource(R.drawable.ic_bookmark_black_24dp);
         }
 
     }

@@ -2,21 +2,33 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/item_upcoming"
-        android:title="@string/menu_sort_by_upcoming" />
+    <group>
+        <item
+            android:id="@+id/item_favorites"
+            android:title="@string/menu_favorites"
+            android:icon="@drawable/ic_favorite_gray_48px"/>
+    </group>
 
-    <item
-        android:id="@+id/item_popularity"
-        android:title="@string/menu_sort_by_popularity" />
 
-    <item
-        android:id="@+id/item_high_rate"
-        android:title="@string/menu_sort_by_top_rated" />
+    <item android:title="@string/menu_sort_by_title"
+        android:id="@+id/sort_by_title">
+        <menu>
+            <item
+                android:id="@+id/item_upcoming"
+                android:title="@string/menu_sort_by_upcoming"
+                android:icon="@drawable/ic_ondemand_video_black_24dp"/>
 
-    <item
-        android:id="@+id/item_favorites"
-        android:title="@string/menu_sort_by_favorites"/>
+            <item
+                android:id="@+id/item_popularity"
+                android:title="@string/menu_sort_by_popularity"
+                android:icon="@drawable/ic_whatshot_black_24dp"/>
+
+            <item
+                android:id="@+id/item_high_rate"
+                android:title="@string/menu_sort_by_top_rated"
+                android:icon="@drawable/ic_thumb_up_black_24dp"/>
+        </menu>
+    </item>
 
 
 </menu>
