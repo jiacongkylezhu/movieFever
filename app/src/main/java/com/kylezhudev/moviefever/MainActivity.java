@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity
     private Menu mMenu;
     private RecyclerView mRvMovie;
     private MovieViewAdapter mRvMovieAdapter;
-    private GridLayoutManager gridLayoutManager;
+    private GridLayoutManager mGridLayoutManager;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
     private NavigationView mNavigationView;
@@ -59,15 +59,14 @@ public class MainActivity extends AppCompatActivity
         mTextView = (TextView) findViewById(R.id.tv_json_results);
         mProgressBar = (ProgressBar) findViewById(R.id.loading_indicator);
         mTvError = (TextView) findViewById(R.id.tv_error);
-        gridLayoutManager = new GridLayoutManager(this, 2);
-        mRvMovie.setLayoutManager(gridLayoutManager);
+        mGridLayoutManager = new GridLayoutManager(this, 2);
+        mRvMovie.setLayoutManager(mGridLayoutManager);
         mRvMovie.setHasFixedSize(true);
         mRvMovieAdapter = new MovieViewAdapter(this);
         mRvMovie.setAdapter(mRvMovieAdapter);
 
         getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
 
-//        View navigationView = LayoutInflater.from(this).inflate(R.layout.navigation_drawer, null, false);
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
         mDrawerLayout.addDrawerListener(mToggle);
@@ -76,21 +75,8 @@ public class MainActivity extends AppCompatActivity
         mNavigationView = (NavigationView) findViewById(R.id.nv_drawer);
         setMenuItemTitleStyle();
         mNavigationView.setNavigationItemSelectedListener(this);
-
-
-
-
-
-
-
-
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        getMenuInflater().inflate(R.menu.menu_main, menu);
-//        return true;
-//    }
 
     private void setMenuItemTitleStyle(){
         mMenu = mNavigationView.getMenu();
@@ -105,27 +91,6 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-//        switch (item.getItemId()){
-//            case R.id.item_upcoming:
-//                SORT_BY_FLAG = 0;
-//                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-//                return true;
-//            case R.id.item_popularity:
-//                SORT_BY_FLAG = 1;
-//                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-//                return true;
-//            case R.id.item_high_rate:
-//                SORT_BY_FLAG = 2;
-//                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-//                return true;
-//            case R.id.item_favorites:
-//                startActivity(new Intent(this, FavoritesActivity.class));
-//                return true;
-//
-//            default:
-//                return super.onOptionsItemSelected(item);
-//        }
-
         if(mToggle.onOptionsItemSelected(item)){
             return true;
         }
@@ -169,11 +134,7 @@ public class MainActivity extends AppCompatActivity
                             url = NetworkUtil.getHighRateUrl();
                         }
                         break;
-
-
-
                     }
-//                    url = NetworkUtil.getPopMovieUrl();
                     rawJson = NetworkUtil.getRawMovieResults(url);
                     mJsonString = rawJson.toString();
                     Log.i("Main_JSON_Checker", "Raw JSON:" + mJsonString);
@@ -249,6 +210,7 @@ public class MainActivity extends AppCompatActivity
         }
 
         mDrawerLayout.closeDrawer(GravityCompat.START);
+        mGridLayoutManager.scrollToPosition(0);
         return true;
 
     }

@@ -51,10 +51,11 @@ public class MovieDetailActivity extends AppCompatActivity implements
     private TextView mTvRating;
     private TextView mTvOverView;
     private TextView mTvTrailerName;
-//    private TextView mTvNoTrailer;
     private TextView mTvTrailerTitle;
     private TextView mTvErrorMessage;
-//    private ImageView mImgNoTrailer;
+    private ImageView mIcReleaseDate;
+    private ImageView mIcRunTime;
+    private ImageView mIcRating;
     private ImageView mPosterThumbnail;
     private ImageView mDivider0;
     private ImageButton mMarkAsFavorite;
@@ -101,13 +102,14 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mTvRunTime = (TextView) findViewById(R.id.tv_movie_runtime);
         mTvRating = (TextView) findViewById(R.id.tv_rating);
         mTvOverView = (TextView) findViewById(R.id.tv_movie_overview);
-//        mTvNoTrailer = (TextView) findViewById(R.id.tv_no_trailer);
         mTvTrailerName = (TextView) findViewById(R.id.tv_trailer_1);
         mTvTrailerTitle = (TextView) findViewById(R.id.tv_trailers_title);
         mTvErrorMessage = (TextView) findViewById(R.id.tv_detail_error);
 
         mPosterThumbnail = (ImageView) findViewById(R.id.img_detail_movie_thumbnail);
-//        mImgNoTrailer = (ImageView) findViewById(R.id.img_detail_not_available);
+        mIcReleaseDate = (ImageView) findViewById(R.id.img_released_date);
+        mIcRunTime = (ImageView) findViewById(R.id.img_movie_runtime);
+        mIcRating = (ImageView) findViewById(R.id.img_rating);
         mDivider0 = (ImageView) findViewById(R.id.img_divider_0);
         mMarkAsFavorite = (ImageButton) findViewById(R.id.btn_mark_as_favorite);
         mRlMoreTrailer = (RelativeLayout) findViewById(R.id.relative_layout_detail_trailer_1);
@@ -355,6 +357,9 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mRlMoreTrailer.setVisibility(View.INVISIBLE);
         mMarkAsFavorite.setVisibility(View.INVISIBLE);
         mTvTrailerTitle.setVisibility(View.INVISIBLE);
+        mIcReleaseDate.setVisibility(View.INVISIBLE);
+        mIcRunTime.setVisibility(View.INVISIBLE);
+        mIcRating.setVisibility(View.INVISIBLE);
 
     }
 
@@ -369,6 +374,9 @@ public class MovieDetailActivity extends AppCompatActivity implements
         mRlMoreTrailer.setVisibility(View.VISIBLE);
         mMarkAsFavorite.setVisibility(View.VISIBLE);
         mTvTrailerTitle.setVisibility(View.VISIBLE);
+        mIcReleaseDate.setVisibility(View.VISIBLE);
+        mIcRunTime.setVisibility(View.VISIBLE);
+        mIcRating.setVisibility(View.VISIBLE);
     }
 
 
@@ -388,6 +396,7 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     .load(mPosterUrlString)
 //                    .resize(width, height)
 //                    .centerCrop()
+                    .placeholder(R.drawable.poster_placeholder)
                     .into(mPosterThumbnail);
 
             String releaseDate = JsonUtil.getDetailReleaseDate(loadedData);
@@ -495,7 +504,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
 
     public void onClickAddFavorite(View view) {
 
-
         final LoaderManager.LoaderCallbacks<Cursor> favoritesResultsLoaderListener
                 = new LoaderManager.LoaderCallbacks<Cursor>() {
             @Override
@@ -516,21 +524,13 @@ public class MovieDetailActivity extends AppCompatActivity implements
                     public Cursor loadInBackground() {
 
                         try {
-//                             favoritesCursor = getContentResolver().query(FavoritesContract.FavoritesEntry.CONTENT_URI,
-//                                    new String[]{FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID},
-//                                    FavoritesContract.FavoritesEntry.COLUMN_MOVIE_ID,
-//                                    new String[]{mMovieId},
-//                                    null);
                             Uri uri = Uri.withAppendedPath(FavoritesContract.FavoritesEntry.CONTENT_URI, mMovieId);
                             favoritesCursor = getContentResolver().query(uri,
                                     null,
                                     null,
                                     null,
                                     null);
-
-
                             return favoritesCursor;
-
                         } catch (Exception e) {
                             Log.i(LOG_TAG, "Data is not in database or failed to asynchronously load data");
                             e.printStackTrace();
@@ -637,7 +637,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
             }
 
 
-            //TODO complete favorite icons
             @Override
             public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
                 mFavoritesResults = data;

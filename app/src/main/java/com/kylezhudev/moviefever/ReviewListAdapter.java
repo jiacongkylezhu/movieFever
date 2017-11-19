@@ -56,6 +56,8 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Re
         if (reviewJsonString != null) {
             mAuthors = JsonUtil.getAuthorFromJson(reviewJsonString);
             mReviews = JsonUtil.getReviewFromJson(reviewJsonString);
+        }else{
+            mReviews = null;
         }
     }
 

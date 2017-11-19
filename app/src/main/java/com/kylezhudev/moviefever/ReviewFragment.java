@@ -40,6 +40,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     private static String mMovieId;
     private static String mReviewRawString = null;
     private static final int REVIEW_LOADER_ID = 1;
+    String[] mReviewResult;
 
 
     public ReviewFragment() {
@@ -95,7 +96,7 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
                 if (mReviewRawString != null) {
                     deliverResult(mReviewRawString);
                 }
-                mProgressBar.setVisibility(View.VISIBLE);
+
                 forceLoad();
             }
 
@@ -121,31 +122,36 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
     @Override
     public void onLoadFinished(Loader<String> loader, String data) {
         mProgressBar.setVisibility(View.INVISIBLE);
-        if (data != null) {
-            String[] reviewResult;
-            try {
-                 reviewResult = new String[JsonUtil.getReviewResultJson(data).length];
-                Log.i(LOG_TAG, "Review: " + data);
-                if(reviewResult.length != 0){
-                    hideNoReview();
-                    try {
-                        reviewListAdapter.saveReviewResults(data);
-                        mRvReviewList.setLayoutManager(mLayoutManger);
-                        mRvReviewList.setAdapter(reviewListAdapter);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }else{
-                    showNoReview();
-                }
 
+        if (data != null) {
+            try {
+                mReviewResult = new String[JsonUtil.getReviewResultJson(data).length];
+                Log.i(LOG_TAG, "Review: " + data);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
+            if (mReviewResult.length != 0) {
+                try {
+                    reviewListAdapter.saveReviewResults(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mRvReviewList.setLayoutManager(mLayoutManger);
+                mRvReviewList.setAdapter(reviewListAdapter);
+                hideNoReview();
+            } else {
+                data = null;
+                try {
+                    reviewListAdapter.saveReviewResults(data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                mRvReviewList.setLayoutManager(mLayoutManger);
+                mRvReviewList.setAdapter(reviewListAdapter);
+                showNoReview();
+            }
 
-//        }else {
-//            showNoReview();
         }
 
     }
@@ -161,9 +167,9 @@ public class ReviewFragment extends Fragment implements LoaderManager.LoaderCall
         mTvReviewTitle.setVisibility(View.INVISIBLE);
     }
 
-    private void hideNoReview(){
-        mTvReviewTitle.setVisibility(View.VISIBLE);
+    private void hideNoReview() {
         mTvNoReview.setVisibility(View.INVISIBLE);
         mIvInfoIcon.setVisibility(View.INVISIBLE);
+        mTvReviewTitle.setVisibility(View.VISIBLE);
     }
 }

@@ -5,6 +5,7 @@
 <resources>
     <dimen name="detail_movie_title_large_text">28sp</dimen>
     <dimen name="margin_general">32dp</dimen>
+    <dimen name="margin_XS">4dp</dimen>
     <dimen name="margin_S">8dp</dimen>
     <dimen name="margin_L">32dp</dimen>
     <dimen name="margin_M">16dp</dimen>

@@ -34,6 +34,7 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
     private  Context mContext;
     private static final String KEY_MOVIE_ID = "id";
     private static final String KEY_POSTER_URL = "posterUrl";
+    private static final String LOG_TAG = MovieDetailActivity.class.getSimpleName();
 
 
     public MovieViewAdapter(Context context) {
@@ -80,11 +81,15 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
+//        int width = holder.mIVMovieThumbnail.getWidth();
+//        Log.i(LOG_TAG, "width: " + width);
+//        double heightDouble = width * 1.5;
+//        int height = (int) heightDouble;
         if (mPosterPathUrls != null) {
             Picasso
                     .with(mContext)
                     .load(mPosterPathUrls[position].toString())
-                    .fit()
+//                    .resize(width, height)
                     .into(holder.mIVMovieThumbnail);
         }
         holder.mTVMovieTitle.setText(mMovieTitle[position]);

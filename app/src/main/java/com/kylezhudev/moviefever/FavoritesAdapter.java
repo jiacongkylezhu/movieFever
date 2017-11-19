@@ -66,7 +66,6 @@ public class FavoritesAdapter extends RecyclerView.Adapter<FavoritesAdapter.Favo
         Picasso
                 .with(mContext)
                 .load(movieUrl)
-                .fit()
                 .into(holder.mIvMovieThumbnail);
 
         holder.mIvMovieThumbnail.setOnClickListener(new View.OnClickListener() {

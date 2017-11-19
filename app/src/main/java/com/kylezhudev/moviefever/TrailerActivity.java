@@ -24,14 +24,6 @@ public class TrailerActivity extends YouTubeBaseActivity implements
 
         youTubePlayerView = (YouTubePlayerView) findViewById(R.id.youTube_activity_playerView);
         youTubePlayerView.initialize(APIKeys.YOUTUBE_API_KEY, this);
-//        youTubePlayerView.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(youTubePlayer != null){
-//                    youTubePlayer.cueVideo(videoId);
-//                }
-//            }
-//        });
     }
 
     @Override
