@@ -17,6 +17,10 @@ public final class JsonUtil {
     private static final String MF_RUN_TIME = "runtime";
     private static final String MF_VIDEO = "video";
     private static final String MF_OVERVIEW = "overview";
+    private static final String VIDEO_KEY = "key";
+    private static final String VIDEO_NAME = "name";
+    private static final String REVIEW_AUTHOR = "author";
+    private static final String REVIEW_CONTENT = "content";
 
 
     public static String[] getPosterPathFromJson(String movieResults) throws JSONException {
@@ -32,6 +36,28 @@ public final class JsonUtil {
         return getResultFromJson(movieResults, MF_MOVIE_ID);
     }
 
+    /**
+     * Get movie array from raw movie video JSON
+     *
+     */
+
+    public static String[] getVideoKeyFromJson(String videoResults) throws JSONException {
+        return getResultFromJson(videoResults, VIDEO_KEY);
+    }
+
+    public static String[] getTrailerName(String videoResults) throws JSONException {
+        return getResultFromJson(videoResults, VIDEO_NAME);
+    }
+
+
+    /**
+     * Reuse to get all Json arrays from raw Json objects.
+     * @param movieResults
+     * @param path
+     * @return
+     * @throws JSONException
+     */
+
 
     private static String[] getResultFromJson(String movieResults, String path) throws JSONException {
         JSONObject movieRawJson = new JSONObject(movieResults);
@@ -44,10 +70,14 @@ public final class JsonUtil {
             Log.i("JsonResults", "String " + resultString[i]);
         }
         return resultString;
-    }
+}
 
     public static String getDetailRunTime(String detailResult) throws JSONException {
         return getDetailFromJson(detailResult, MF_RUN_TIME);
+    }
+
+    public static String getDetailPosterPath(String detailResult) throws JSONException {
+        return getDetailFromJson(detailResult, MF_POSTER_PATH);
     }
 
     public static String getDetailReleaseDate(String detailResult) throws JSONException {
@@ -70,12 +100,63 @@ public final class JsonUtil {
         return getDetailFromJson(detailResult, MF_OVERVIEW);
     }
 
+
+
+
+
+
+    /**
+     * getDetailFromJson
+     * reuse for getting movie details
+     */
+
     private static String getDetailFromJson(String detailResult, String path) throws JSONException {
         JSONObject detailRawJson = new JSONObject(detailResult);
         String resultString = detailRawJson.getString(path);
         Log.i("DetailJsonResults", "String " + resultString);
         return resultString;
     }
+
+    public static String[] getAuthorFromJson(String reviewResult) throws JSONException {
+        return getReviewsFromJson(reviewResult, REVIEW_AUTHOR);
+    }
+
+    public static String[] getReviewFromJson(String reviewResult) throws JSONException {
+        return getReviewsFromJson(reviewResult, REVIEW_CONTENT);
+    }
+
+
+    /**
+     *
+     * Reuse for getting review authors and contents
+     * @param reviewResult
+     * @param path
+     * @return
+     * @throws JSONException
+     */
+
+
+
+    private static String[] getReviewsFromJson(String reviewResult, String path) throws JSONException {
+        JSONObject reviewRawJson = new JSONObject(reviewResult);
+        JSONArray reviewJsonArray = reviewRawJson.getJSONArray(MF_RESULT);
+        String[] resultString = new String[reviewJsonArray.length()];
+
+        for(int i = 0; i < resultString.length; i++){
+            JSONObject pathJson = reviewJsonArray.getJSONObject(i);
+            resultString[i] = pathJson.getString(path);
+        }
+
+        return resultString;
+    }
+
+    public static String[] getReviewResultJson(String reviewResult) throws JSONException {
+        JSONObject reviewRawJson = new JSONObject(reviewResult);
+        JSONArray reviewJsonArray = reviewRawJson.getJSONArray(MF_RESULT);
+        return new String[reviewJsonArray.length()];
+    }
+
+
 
 
 }

@@ -18,9 +18,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MovieDetailActivity" android:parentActivityName=".MainActivity">
+        <activity
+            android:name=".MovieDetailActivity"
+            android:configChanges="orientation|screenSize|keyboardHidden"
+            android:label=""/>
+        <activity
+            android:name=".TrailerActivity"
+            android:parentActivityName=".MovieDetailActivity" />
+        <activity
+            android:name=".FavoritesActivity"
+            android:parentActivityName=".MainActivity" />
 
-        </activity>
+        <provider
+            android:name=".data.FavoritesProvider"
+            android:authorities="com.kylezhudev.moviefever"
+            android:exported="false" />
+
     </application>
 
 </manifest>

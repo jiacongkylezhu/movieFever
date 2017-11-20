@@ -5,10 +5,14 @@
 <resources>
     <dimen name="detail_movie_title_large_text">28sp</dimen>
     <dimen name="margin_general">32dp</dimen>
-    <dimen name="margin_x_small">8dp</dimen>
-    <dimen name="margin_large">32dp</dimen>
+    <dimen name="margin_XS">4dp</dimen>
+    <dimen name="margin_S">8dp</dimen>
+    <dimen name="margin_L">32dp</dimen>
     <dimen name="margin_M">16dp</dimen>
+    <dimen name="margin_XL">50dp</dimen>
+    <dimen name="subtitle_text_size_L">22sp</dimen>
     <dimen name="subtitle_text_size_M">18sp</dimen>
     <dimen name="subtitle_text_size_S">14sp</dimen>
+    <dimen name="subtitle_text_size_XS">8sp</dimen>
 
 </resources>

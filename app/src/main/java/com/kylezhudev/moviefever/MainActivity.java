@@ -1,12 +1,20 @@
 package com.kylezhudev.moviefever;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.AsyncTaskLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.TextAppearanceSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,7 +33,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity
-        implements LoaderManager.LoaderCallbacks<String> {
+        implements LoaderManager.LoaderCallbacks<String>, NavigationView.OnNavigationItemSelectedListener{
     private static final int MOVIE_LOADER_ID = 1;
     private TextView mTextView;
     private ProgressBar mProgressBar;
@@ -33,7 +41,10 @@ public class MainActivity extends AppCompatActivity
     private Menu mMenu;
     private RecyclerView mRvMovie;
     private MovieViewAdapter mRvMovieAdapter;
-    private GridLayoutManager gridLayoutManager;
+    private GridLayoutManager mGridLayoutManager;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mToggle;
+    private NavigationView mNavigationView;
 
 
     private static int SORT_BY_FLAG = 1;
@@ -42,49 +53,49 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+//        setContentView(R.layout.activity_main);
+        setContentView(R.layout.navigation_drawer);
         mRvMovie = (RecyclerView) findViewById(R.id.rv_movie_main);
         mTextView = (TextView) findViewById(R.id.tv_json_results);
         mProgressBar = (ProgressBar) findViewById(R.id.loading_indicator);
         mTvError = (TextView) findViewById(R.id.tv_error);
-        gridLayoutManager = new GridLayoutManager(this, 2);
-        mRvMovie.setLayoutManager(gridLayoutManager);
+        mGridLayoutManager = new GridLayoutManager(this, 2);
+        mRvMovie.setLayoutManager(mGridLayoutManager);
         mRvMovie.setHasFixedSize(true);
         mRvMovieAdapter = new MovieViewAdapter(this);
         mRvMovie.setAdapter(mRvMovieAdapter);
 
-
-
         getSupportLoaderManager().initLoader(MOVIE_LOADER_ID, null, this);
 
-
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close);
+        mDrawerLayout.addDrawerListener(mToggle);
+        mToggle.syncState();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        mNavigationView = (NavigationView) findViewById(R.id.nv_drawer);
+        setMenuItemTitleStyle();
+        mNavigationView.setNavigationItemSelectedListener(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+
+    private void setMenuItemTitleStyle(){
+        mMenu = mNavigationView.getMenu();
+        MenuItem item = mMenu.findItem(R.id.sort_by_title);
+        SpannableString title = new SpannableString(item.getTitle());
+        int start = 0;
+        int flag = 0;
+        title.setSpan(new TextAppearanceSpan(this,R.style.MenuTitleTextAppearance), start, title.length(), flag);
+        item.setTitle(title);
+
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.item_upcoming:
-                SORT_BY_FLAG = 0;
-                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-                return true;
-            case R.id.item_popularity:
-                SORT_BY_FLAG = 1;
-                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-                return true;
-            case R.id.item_high_rate:
-                SORT_BY_FLAG = 2;
-                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
-                return true;
-
-            default:
-                return super.onOptionsItemSelected(item);
+        if(mToggle.onOptionsItemSelected(item)){
+            return true;
         }
+        return super.onOptionsItemSelected(item);
+
     }
 
     @Override
@@ -120,14 +131,10 @@ public class MainActivity extends AppCompatActivity
                         }
                         break;
                         case 2: {
-                            url = NetworkUtil.gethighRateUrl();
+                            url = NetworkUtil.getHighRateUrl();
                         }
                         break;
-
-
-
                     }
-//                    url = NetworkUtil.getPopMovieUrl();
                     rawJson = NetworkUtil.getRawMovieResults(url);
                     mJsonString = rawJson.toString();
                     Log.i("Main_JSON_Checker", "Raw JSON:" + mJsonString);
@@ -179,4 +186,32 @@ public class MainActivity extends AppCompatActivity
     }
 
 
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.item_upcoming:
+                SORT_BY_FLAG = 0;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                break;
+            case R.id.item_popularity:
+                SORT_BY_FLAG = 1;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                break;
+            case R.id.item_high_rate:
+                SORT_BY_FLAG = 2;
+                getSupportLoaderManager().restartLoader(MOVIE_LOADER_ID, null, this);
+                break;
+            case R.id.item_favorites:
+                startActivity(new Intent(this, FavoritesActivity.class));
+                break;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+
+        mDrawerLayout.closeDrawer(GravityCompat.START);
+        mGridLayoutManager.scrollToPosition(0);
+        return true;
+
+    }
 }
