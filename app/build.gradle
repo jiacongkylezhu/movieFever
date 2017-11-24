@@ -1,5 +1,17 @@
 apply plugin: 'com.android.application'
 
+def YOUTUBE_API_KEY = '"' + YOUTUBE_KEY + '"' ?:'"Define YouTube API key"'
+def MOVIE_API_KEY = '"' + MOVIE_KEY + '"' ?: '"Define database API key"'
+
+android.buildTypes.each { type -&gt
+    type.buildConfigField 'String', 'YOUTUBE_API_KEY', YOUTUBE_API_KEY
+    type.buildConfigField 'String', 'MOVIE_API_KEY', MOVIE_API_KEY
+}
+
+repositories {
+    mavenCentral()
+}
+
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
@@ -19,9 +31,7 @@ android {
     }
 }
 
-repositories {
-    mavenCentral()
-}
+
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
