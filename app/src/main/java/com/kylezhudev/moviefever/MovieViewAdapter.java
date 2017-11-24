@@ -81,15 +81,11 @@ public class MovieViewAdapter extends RecyclerView.Adapter<MovieViewAdapter.Movi
 
     @Override
     public void onBindViewHolder(MovieViewHolder holder, int position) {
-//        int width = holder.mIVMovieThumbnail.getWidth();
-//        Log.i(LOG_TAG, "width: " + width);
-//        double heightDouble = width * 1.5;
-//        int height = (int) heightDouble;
+
         if (mPosterPathUrls != null) {
             Picasso
                     .with(mContext)
                     .load(mPosterPathUrls[position].toString())
-//                    .resize(width, height)
                     .into(holder.mIVMovieThumbnail);
         }
         holder.mTVMovieTitle.setText(mMovieTitle[position]);
