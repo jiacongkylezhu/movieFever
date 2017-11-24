@@ -208,34 +208,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
             };
         }
 
-//        if (id == MOVIE_TRAILER_LOADER_ID) {
-//            return new AsyncTaskLoader<String>(this) {
-//                String mTrailerJsonString;
-//
-//
-//                @Override
-//                protected void onStartLoading() {
-//                    forceLoad();
-//                }
-//
-//                @Override
-//                public String loadInBackground() {
-//                    JSONObject videoJsonObject;
-//
-//                    try {
-//                        videoJsonObject = NetworkUtil.getRawVideoJson(
-//                                NetworkUtil.getTrailerUrl(getContext(), mMovieId));
-//                        mTrailerJsonString = videoJsonObject.toString();
-//                        return mTrailerJsonString;
-//                    } catch (IOException e) {
-//                        e.printStackTrace();
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    return mTrailerJsonString;
-//                }
-//            };
-//        }
 
         return null;
     }
@@ -256,24 +228,6 @@ public class MovieDetailActivity extends AppCompatActivity implements
                 }
             }
         }
-
-//        if (loader.getId() == MOVIE_TRAILER_LOADER_ID) {
-//            if (data == null) {
-//                noTrailer();
-//            } else {
-//                try {
-//                    showTrailer(data);
-//                    saveVideoID(data);
-//                    int initAttempt = 0;
-//                    loadTrailer(initAttempt);
-//                    loadThumbnail(mTrailerThumbnail, mTrailer2Id);
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//        }
     }
 
     @Override
