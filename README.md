@@ -16,8 +16,10 @@ This project is used RecyclerView to load movie results in JSON format via OKHtt
 
 
 ## Libaraies
-  - picasso
-  - okhttp3
+  
+  - Picasso
+  
+  - OkHttp
   
 
 ## Installation
