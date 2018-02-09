@@ -3,10 +3,10 @@
 ## What is Moview Fever?
 
 Movie Fever is an application allowing users to discover movies
-  -Sort movies by three categories (Top rated, popular, and upcoming) 
-  -Get the latest movie scores and reviews from critics
-  -Watch trailers
-  -Add movies to Favorites
+  - Sort movies by three categories (Top rated, popular, and upcoming) 
+  - Get the latest movie scores and reviews from critics
+  - Watch trailers
+  - Add movies to Favorites
  
 ![moviefever](https://user-images.githubusercontent.com/18712858/35963849-ee9cdb10-0c6a-11e8-8f4c-f403538a85c0.gif)
 
@@ -16,8 +16,8 @@ This project is used RecyclerView to load movie results in JSON format via OKHtt
 
 
 ## Libaraies
-  -picasso
-  -okhttp3
+  - picasso
+  - okhttp3
   
 
 ## Installation
@@ -47,4 +47,4 @@ https://developers.google.com/youtube/android/player/register
 
 
 ## Authors
-  -Jiacong (Kyle) Zhu
+  * Jiacong (Kyle) Zhu
