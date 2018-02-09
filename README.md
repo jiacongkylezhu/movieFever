@@ -22,9 +22,11 @@ This project is used RecyclerView to load movie results in JSON format via OKHtt
 
 ## Installation
 1. After clone or down the project, create a new bundle file
+
 ![mf1](https://user-images.githubusercontent.com/18712858/36053394-6719b13a-0da6-11e8-847b-97563bb07900.png)
 
 2. Name it "keystore.properties" (only type "keystore" in the field)
+
 ![mf2](https://user-images.githubusercontent.com/18712858/36053110-26bb61de-0da5-11e8-9300-97d006063b88.png)
 
 3. Copy and Paste the following into the keystore.propertie and insert your API keys int to the quotation marks:
