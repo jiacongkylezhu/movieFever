@@ -1,6 +1,6 @@
-# movieFever
+# Movie Fever
 
-## What is Moview Fever?
+## What is Movie Fever?
 
 Movie Fever is an application allowing users to discover movies
   - Sort movies by three categories (Top rated, popular, and upcoming) 
