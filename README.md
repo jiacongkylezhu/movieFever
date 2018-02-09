@@ -2,7 +2,7 @@
 
 ## What is Movie Fever?
 
-Movie Fever is an application allowing users to discover movies
+Movie Fever is an open source project allowing users to discover movies
   - Sort movies by three categories (Top rated, popular, and upcoming) 
   - Get the latest movie scores and reviews from critics
   - Watch trailers
