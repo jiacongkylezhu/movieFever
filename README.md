@@ -15,7 +15,7 @@ Movie Fever is an open source project allowing users to discover movies
 This project is used RecyclerView to load movie results in JSON format via OKHttp from an open source database The Movie DB(TMDB) It captures the Movie IDs, titles, and images and displays on the main activity. Handling orientation changes by using Loaders. Since the complex UI in MovieDetailActivity, the project is used Constrain Layout to handle the elements, used YouTube Player Fragment to play the trailer, and used a static fragment which contains a RecyclerView to display a list of reviews.   
 
 
-## Libaraies
+## Libraries
   
   - Picasso
   
