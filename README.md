@@ -8,7 +8,7 @@ Movie Fever is an open source project allowing users to discover movies
   - Watch trailers
   - Add movies to Favorites
  
-![moviefever](https://user-images.githubusercontent.com/18712858/35963849-ee9cdb10-0c6a-11e8-8f4c-f403538a85c0.gif)
+![moviefever570](https://user-images.githubusercontent.com/18712858/36117736-9754330c-0fef-11e8-82df-7558ab5e23ef.gif)
 
 
 ## Details
